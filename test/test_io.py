@@ -16,8 +16,9 @@ class CallResult:
         self.returncode=returncode
 
 
-def execute_process(command, ok_code=[0]): 
-    df = subprocess.Popen(command, stdout=subprocess.PIPE,  stderr=subprocess.PIPE)        
+def execute_process(command, input_file, ok_code=[0]): 
+  with open(input_file, 'r', 0) as a:#no buffer
+    df = subprocess.Popen(command, stdout=subprocess.PIPE,  stderr=subprocess.PIPE, stdin=a)        
     output, err = df.communicate()
     code=df.returncode
     if code not in ok_code:
@@ -33,7 +34,7 @@ input_files=glob.glob("test/cases/*.in")
 
 wrong=0
 for in_data in input_files:
-    result=execute_process(["bin/quixxmaster","<",in_data])
+    result=execute_process(["bin/quixxmaster"], in_data )
     with open(in_data[0:-2]+'ans', 'r') as myfile:
         expected=myfile.read();
     if expected!=result.stdout:
