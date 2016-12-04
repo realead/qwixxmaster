@@ -18,4 +18,6 @@ create : $(objects)
 	
 test: create
 	python test/test_io.py
-	
+
+run: create
+	bin/quixxmaster

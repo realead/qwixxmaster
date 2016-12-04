@@ -4,6 +4,8 @@
 
 std::vector<std::string> split(const std::string &line){
     std::vector<std::string> res;
+    if(!line.empty())
+        res.push_back(line);
     return res;
 }
 
@@ -17,10 +19,10 @@ int main(){
        std::string line;
        std::getline(std::cin, line);
        
-       if(!g.execute_command(split(line)))
+       if(!g.execute_command(split(line), std::cout))
             break;
     }
     
-    std::cout<<"\nexiting..."<<std::endl;
+    std::cout<<"exiting..."<<std::endl;
 }
 
