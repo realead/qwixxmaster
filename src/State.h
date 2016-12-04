@@ -26,7 +26,8 @@ class State{
     int get_missed() const;
     
     //returns false if move impossible
-    bool take(Color color, int number);  
+    bool take(Color color, int number); 
+    void add_miss(); 
 };
 
 

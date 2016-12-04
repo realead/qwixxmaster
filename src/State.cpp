@@ -54,3 +54,7 @@ bool State::take(Color color, int number){
    return true;
 }
 
+void State::add_miss(){
+  missed++;
+}
+

@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "StringUtils.h"
 
 
 namespace{
@@ -14,9 +15,26 @@ namespace{
         out<<"missed: "<<state.get_missed()<<std::endl;
     }
     
+    void wrong_take_syntax(std::ostream &out, const game::Command &command){
+        out<<"unknown syntax: '"<<stringutils::join(command)<<"'. Known syntax either 'take miss' or 'take <color> <number>'"<<std::endl;
+    }
+    
+    void take_missed(State &state, std::ostream &out, const game::Command &command){
+        if(command.at(1)!="miss"){
+            wrong_take_syntax(out, command);
+            return;
+        }
+        state.add_miss();
+    }
+    
     void take(State &state, std::ostream &out, const game::Command &command){
+        if(command.size()==2){
+          take_missed(state, out, command);
+          return;
+        }
+        //normal take
         if(command.size()!=3){
-            out << "unknown syntax for 'take'. Known syntax is 'take <color> <number>'"<<std::endl;
+            wrong_take_syntax(out, command);
             return;
         }
         Color color;
