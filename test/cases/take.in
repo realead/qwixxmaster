@@ -1,0 +1,13 @@
+take red 1
+print
+take red 2
+print
+take yellow 2
+print
+take yellow 5
+print
+take green 10
+print
+take blue 5
+print
+exit

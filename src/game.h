@@ -10,7 +10,8 @@ class game{
 private:
     State state;   
 public:
-    bool execute_command(const std::vector<std::string> &command, std::ostream &out);
+    typedef std::vector<std::string> Command;
+    bool execute_command(const Command &command, std::ostream &out);
 };
 
 

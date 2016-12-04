@@ -4,8 +4,16 @@
 #include <string>
 
 const size_t COLOR_CNT=4;
-enum Color {red=0, yellow=1, green=2, blue=3};
+enum Color {cRED=0, cYELLOW=1, cGREEN=2, cBLUE=3};
 std::string color2str(Color color);
+bool str2color(const std::string &str, Color &color);
+    
+    
+struct ColorState{
+   unsigned int last;
+   unsigned int cnt;
+   ColorState(unsigned char last, unsigned char cnt); 
+};   
     
 class State{
   private:
@@ -14,10 +22,11 @@ class State{
     unsigned char missed;
   public:
     State();
-    typedef std::pair<unsigned int, unsigned int> ColorState;
     ColorState get_color_state(Color color) const;
     int get_missed() const;
     
+    //returns false if move impossible
+    bool take(Color color, int number);  
 };
 
 
