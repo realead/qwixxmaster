@@ -27,7 +27,9 @@ class State{
     
     //returns false if move impossible
     bool take(Color color, int number); 
-    void add_miss(); 
+    void add_miss();
+    
+    int score() const; 
 };
 
 

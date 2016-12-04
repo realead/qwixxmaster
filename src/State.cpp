@@ -58,3 +58,14 @@ void State::add_miss(){
   missed++;
 }
 
+
+const int scores[13]={0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78};
+int State::score() const{
+      int res=0;
+      for(size_t i=0;i<COLOR_CNT;i++)
+            res+=scores[cnt[i]];
+      return res-5*missed;
+}
+
+
+

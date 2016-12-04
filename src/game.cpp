@@ -54,6 +54,10 @@ namespace{
             return;
         }  
     }
+    
+    void score(const State &state, std::ostream &out){
+        out << state.score()<<std::endl;
+    }
 
 }
 
@@ -71,6 +75,11 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
     
     if(command.at(0)=="take"){
         take(state, out, command);
+        return true;
+    }
+    
+    if(command.at(0)=="score"){
+        score(state, out);
         return true;
     }
         
