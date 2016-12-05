@@ -1,6 +1,7 @@
 #include "StringUtils.h"
 
 #include <sstream>
+#include <stdexcept>
 
 std::string stringutils::join(const std::vector<std::string> &strs, const std::string &delimeter){
     std::stringstream res;
@@ -12,4 +13,18 @@ std::string stringutils::join(const std::vector<std::string> &strs, const std::s
     return res.str();
 }
 
+
+bool stringutils::str2int(const std::string &str, int &result){
+    size_t processed=0;   
+    try{
+        result=stoi(str, &processed);
+    }
+    catch(std::invalid_argument &){
+        return false;
+    }
+    catch(std::out_of_range &){
+        return false;
+    }
+    return processed==str.size();
+}
 

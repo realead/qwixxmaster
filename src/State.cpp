@@ -54,10 +54,25 @@ bool State::take(Color color, int number){
    return true;
 }
 
-void State::add_miss(){
-  missed++;
+
+bool State::set(Color color, int last_, int taken_){
+    //TODO: check if valid
+    last[color]=static_cast<unsigned char>(last_);
+    cnt[color]=static_cast<unsigned char>(taken_);
+    
+    return true;
 }
 
+
+void State::add_miss(){
+    missed++;
+}
+
+bool State::set_missed(int missed_){
+    //TODO: check if valid
+    missed=static_cast<unsigned char>(missed_);
+    return true;
+}
 
 const int scores[13]={0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78};
 int State::score() const{
