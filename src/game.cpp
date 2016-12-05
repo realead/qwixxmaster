@@ -42,9 +42,8 @@ namespace{
             out << "unknown color '"<<command.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'"<<std::endl;
             return;
         }
-        size_t processed=0;
-        int number=stoi(command.at(2), &processed);
-        if(processed!=command.at(2).size()){
+        int number;
+        if(!stringutils::str2int(command.at(2), number)){
             out << "could not convert '"<<command.at(2)<<"' to number"<<std::endl;
             return;
         }
