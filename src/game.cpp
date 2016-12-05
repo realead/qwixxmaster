@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "StringUtils.h"
-
+#include "QuixxException.h"
 
 namespace{
     void print_state(const State &state, std::ostream &out){
@@ -60,13 +60,12 @@ namespace{
     
     void set(State &state, std::ostream &out, const game::Command &command){
        //format of set: <taken_red> <last_red> <taken_yellow> <last_yellow> <taken_green> <last_green> <taken_blue> <last_blue> <missed>
-       if(command.size()!=10){
-         out << "invalid syntax: '"<<stringutils::join(command)
-             <<"'. Known syntax is 'set <taken_red> <last_red>"
-               " <taken_yellow> <last_yellow> <taken_green> <last_green>"
-               " <taken_blue> <last_blue> <missed>'"<<std::endl;
-         return;
-       } 
+        if(command.size()!=10)
+            THROW_QUIXX("invalid syntax: '"<<stringutils::join(command)
+                        <<"'. Known syntax is 'set <taken_red> <last_red>"
+                          " <taken_yellow> <last_yellow> <taken_green> <last_green>"
+                          " <taken_blue> <last_blue> <missed>'");       
+
        State new_state;
        for(size_t i=0;i<COLOR_CNT;i++){
             Color color=static_cast<Color>(i);
@@ -98,29 +97,36 @@ namespace{
 
 
 bool game::execute_command(const std::vector<std::string> &command, std::ostream &out){
-    if(command.empty())
-        return true;
-    if(command.at(0)=="exit")
-        return false;
-    if(command.at(0)=="print"){
-        print_state(state, out);
-        return true;
-    }
-    
-    if(command.at(0)=="take"){
-        take(state, out, command);
-        return true;
-    }
-    
-    if(command.at(0)=="score"){
-        score(state, out);
-        return true;
-    }
+
+    try{
+        if(command.empty())
+            return true;
+        if(command.at(0)=="exit")
+            return false;
+        if(command.at(0)=="print"){
+            print_state(state, out);
+            return true;
+        }
         
+        if(command.at(0)=="take"){
+            take(state, out, command);
+            return true;
+        }
         
-    if(command.at(0)=="set"){
-        set(state, out, command);
-        return true;
+        if(command.at(0)=="score"){
+            score(state, out);
+            return true;
+        }
+            
+            
+        if(command.at(0)=="set"){
+            set(state, out, command);
+            return true;
+        }
+    }
+    catch (QuixxException &ex){
+      out << ex.what() << std::endl;
+      return true;
     }
     
     //unknown!
