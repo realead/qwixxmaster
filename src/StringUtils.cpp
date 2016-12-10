@@ -28,3 +28,9 @@ bool stringutils::str2int(const std::string &str, int &result){
     return processed==str.size();
 }
 
+std::string stringutils::int2str(int value){
+    std::stringstream res;
+    res<<value;
+    return res.str();
+}
+

@@ -5,6 +5,8 @@
 #include "StringUtils.h"
 #include "QuixxException.h"
 
+#include "Command.h"
+
 namespace{
     void print_state(const State &state, std::ostream &out){
         for(size_t i=0;i<COLOR_CNT;i++){
@@ -52,10 +54,6 @@ namespace{
             out << "invalid move"<<std::endl;
             return;
         }  
-    }
-    
-    void score(const State &state, std::ostream &out){
-        out << state.score()<<std::endl;
     }
     
     void set(State &state, std::ostream &out, const game::Command &command){
@@ -112,13 +110,7 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
             take(state, out, command);
             return true;
         }
-        
-        if(command.at(0)=="score"){
-            score(state, out);
-            return true;
-        }
-            
-            
+                        
         if(command.at(0)=="set"){
             set(state, out, command);
             return true;
@@ -129,8 +121,24 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
       return true;
     }
     
-    //unknown!
-    out<<"unknown command: "<<command.at(0)<<std::endl;
+    try{
+        ::Command &c=CommandDictionary::get_command(command.at(0));
+        bool return_value=true;
+        std::string message=c.check_syntax(command);
+        if(message.empty()){
+            message=c.check_validity(state, command);
+            if(message.empty()){
+                message=c.execute(state, command);
+                return_value=!c.exit_program();
+            }
+        }
+        out<<message<<std::endl;
+        return return_value;
+    }       
+    catch (QuixxException &ex){
+     // out << ex.what() << std::endl;
+      out<<"unknown command: "<<command.at(0)<<std::endl;
+    }
     return true;
 }
 
