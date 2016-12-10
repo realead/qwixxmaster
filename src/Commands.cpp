@@ -14,7 +14,7 @@ REGISTER_COMMAND(ExitCommandParser);
 namespace{
   void check_command_without_parameters(const CommandLine &line, const std::string &command_name){
     if(line.size()!=1)
-        THROW_QUIXX("can not parse '"<<stringutils::join(line)<<"'. The right syntax for the "<<command_name<<" command is '"<<command_name<<"'.");
+        THROW_QUIXX("cannot parse '"<<stringutils::join(line)<<"'. The right syntax for the "<<command_name<<" command is '"<<command_name<<"'.");
     if(line[0]!=command_name) //paranoia
         THROW_QUIXX("this is not the "<<command_name<<" command");
   }
