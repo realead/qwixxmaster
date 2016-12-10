@@ -9,45 +9,6 @@
 
 namespace{
     
-    void wrong_take_syntax(std::ostream &out, const game::Command &command){
-        out<<"unknown syntax: '"<<stringutils::join(command)<<"'. Known syntax either 'take miss' or 'take <color> <number>'"<<std::endl;
-    }
-    
-    void take_missed(State &state, std::ostream &out, const game::Command &command){
-        if(command.at(1)!="miss"){
-            wrong_take_syntax(out, command);
-            return;
-        }
-        state.add_miss();
-    }
-    
-    void take(State &state, std::ostream &out, const game::Command &command){
-        if(command.size()==2){
-          take_missed(state, out, command);
-          return;
-        }
-        //normal take
-        if(command.size()!=3){
-            wrong_take_syntax(out, command);
-            return;
-        }
-        Color color;
-        if(!str2color(command.at(1), color)){
-            out << "unknown color '"<<command.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'"<<std::endl;
-            return;
-        }
-        int number;
-        if(!stringutils::str2int(command.at(2), number)){
-            out << "could not convert '"<<command.at(2)<<"' to number"<<std::endl;
-            return;
-        }
-        
-        if(!state.take(color, number)){
-            out << "invalid move"<<std::endl;
-            return;
-        }  
-    }
-    
     void set(State &state, std::ostream &out, const game::Command &command){
        //format of set: <taken_red> <last_red> <taken_yellow> <last_yellow> <taken_green> <last_green> <taken_blue> <last_blue> <missed>
         if(command.size()!=10)
@@ -91,11 +52,6 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
     try{
         if(command.empty())
             return true;
-            
-        if(command.at(0)=="take"){
-            take(state, out, command);
-            return true;
-        }
                         
         if(command.at(0)=="set"){
             set(state, out, command);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Command.h"
+#include "State.h"
 
 #define CREATE_COMMAND_PARSER_DECLARATION(Name)\
     class Name##CommandParser: public CommandParser{\
@@ -23,4 +24,16 @@
 CREATE_COMMAND_DECLARATION(Score);
 CREATE_COMMAND_DECLARATION(Exit);
 CREATE_COMMAND_DECLARATION(Print);
+
+CREATE_COMMAND_PARSER_DECLARATION(Take);
+CREATE_COMMAND_EXECUTER_DECLARATION(TakeMiss);
+
+class  TakeColorCommandExecuter: public CommandExecuter{
+     Color color;
+     int number;
+public: 
+     TakeColorCommandExecuter(Color color, int number);
+     virtual std::string execute(State &state);
+     virtual bool exit_program();
+};
 

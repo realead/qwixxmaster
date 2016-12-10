@@ -13,6 +13,7 @@
 REGISTER_COMMAND(Score);
 REGISTER_COMMAND(Exit);
 REGISTER_COMMAND(Print);
+REGISTER_COMMAND(Take);
 
 
 namespace{
@@ -86,4 +87,66 @@ CommandExecuterPtr PrintCommandParser::parse(const CommandLine &line){
     check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new PrintCommandExecuter());
 }
+
+
+///
+std::string TakeMissCommandExecuter::execute(State &state){
+    state.add_miss();
+    return "";
+}
+
+bool TakeMissCommandExecuter::exit_program(){
+    return false;
+}
+
+std::string TakeCommandParser::command_name(){ 
+    return "take";
+}
+
+
+namespace{
+    void wrong_take_syntax(const CommandLine &command){
+        THROW_QUIXX("unknown syntax: '"<<stringutils::join(command)<<"'. Known syntax either 'take miss' or 'take <color> <number>'");
+    }
+}
+
+
+CommandExecuterPtr TakeCommandParser::parse(const CommandLine &line){   
+    if(line.size()==2){
+        if(line.at(1)!="miss"){
+            wrong_take_syntax(line);
+        }
+        return CommandExecuterPtr(new TakeMissCommandExecuter());
+    }
+    //normal take
+    if(line.size()!=3){
+        wrong_take_syntax(line);
+    }
+    Color color;
+    if(!str2color(line.at(1), color)){
+        THROW_QUIXX("unknown color '"<<line.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'");
+    }
+    int number;
+    if(!stringutils::str2int(line.at(2), number)){
+       THROW_QUIXX("could not convert '"<<line.at(2)<<"' to number");
+    }
+    
+    return CommandExecuterPtr(new TakeColorCommandExecuter(color, number));
+}
+
+TakeColorCommandExecuter::TakeColorCommandExecuter(Color color_, int number_):
+   color(color_), number(number_){}
+   
+   
+std::string TakeColorCommandExecuter::execute(State &state){
+    if(!state.take(color, number)){
+            THROW_QUIXX("invalid move");
+    }
+    return "";
+}
+
+bool TakeColorCommandExecuter::exit_program(){
+    return false;
+}
+
 
