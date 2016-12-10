@@ -11,6 +11,16 @@ REGISTER_COMMAND(ScoreCommandParser);
 REGISTER_COMMAND(ExitCommandParser);
 
 
+namespace{
+  void check_command_without_parameters(const CommandLine &line, const std::string &command_name){
+    if(line.size()!=1)
+        THROW_QUIXX("can not parse '"<<stringutils::join(line)<<"'. The right syntax for the "<<command_name<<" command is '"<<command_name<<"'.");
+    if(line[0]!=command_name) //paranoia
+        THROW_QUIXX("this is not the "<<command_name<<" command");
+  }
+ 
+}
+
 std::string ScoreCommandExecuter::execute(State &state){
     return stringutils::int2str(state.score());
 }
@@ -24,10 +34,7 @@ std::string ScoreCommandParser::command_name(){
 }
 
 CommandExecuterPtr ScoreCommandParser::parse(const CommandLine &line){
-    if(line.size()!=1)
-        THROW_QUIXX("can not parse '"<<stringutils::join(line)<<"'. The right syntax for the score command is 'score'.");
-    if(line[0]!=command_name()) //paranoia
-        THROW_QUIXX("this is not the score command");
+    check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new ScoreCommandExecuter());
 }
 
@@ -46,11 +53,8 @@ std::string ExitCommandParser::command_name(){
     return "exit";
 }
 
-CommandExecuterPtr ExitCommandParser::parse(const CommandLine &line){
-    if(line.size()!=1)
-        THROW_QUIXX("can not parse '"<<stringutils::join(line)<<"'. The right syntax for the exit command is 'exit'.");
-    if(line[0]!=command_name()) //paranoia
-        THROW_QUIXX("this is not the "<<command_name()<<" command");
+CommandExecuterPtr ExitCommandParser::parse(const CommandLine &line){   
+    check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new ExitCommandExecuter());
 }
 
