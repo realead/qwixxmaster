@@ -14,6 +14,7 @@ REGISTER_COMMAND(Score);
 REGISTER_COMMAND(Exit);
 REGISTER_COMMAND(Print);
 REGISTER_COMMAND(Take);
+REGISTER_COMMAND(Set);
 
 
 namespace{
@@ -149,4 +150,57 @@ bool TakeColorCommandExecuter::exit_program(){
     return false;
 }
 
+
+std::string SetCommandParser::command_name(){ 
+    return "set";
+}
+
+CommandExecuterPtr SetCommandParser::parse(const CommandLine &line){ 
+    //format of set: <taken_red> <last_red> <taken_yellow> <last_yellow> <taken_green> <last_green> <taken_blue> <last_blue> <missed>
+    if(line.size()!=10)
+        THROW_QUIXX("invalid syntax: '"<<stringutils::join(line)
+                        <<"'. Known syntax is 'set <taken_red> <last_red>"
+                          " <taken_yellow> <last_yellow> <taken_green> <last_green>"
+                          " <taken_blue> <last_blue> <missed>'");       
+
+    std::array<int,COLOR_CNT> taken;
+    std::array<int,COLOR_CNT> last;
+    for(size_t i=0;i<COLOR_CNT;i++){
+            if(!stringutils::str2int(line.at(i*2+1), taken[i]) ||
+               !stringutils::str2int(line.at(i*2+2), last[i])){
+               THROW_QUIXX("cannot parse for color "<<color2str(static_cast<Color>(i)));   
+            }
+    }
+    int missed;
+    if(!stringutils::str2int(line.back(), missed)){
+            THROW_QUIXX("cannot parse missed");
+    }  
+    return CommandExecuterPtr(new SetCommandExecuter(last, taken, missed)); 
+}
+
+
+SetCommandExecuter::SetCommandExecuter(const std::array<int,COLOR_CNT> &last_, const std::array<int,COLOR_CNT> &taken_, int missed_):
+   last(last_), taken(taken_), missed(missed_){}
+   
+   
+std::string SetCommandExecuter::execute(State &state){
+    State new_state(state);
+    for(size_t i=0;i<COLOR_CNT;i++){
+        Color color=static_cast<Color>(i); 
+        if(!new_state.set(color, last[i], taken[i])){
+               THROW_QUIXX("invalid set for color "<<color2str(color));
+        }
+    }
+    
+    if(!new_state.set_missed(missed)){
+        THROW_QUIXX("invalid missed");
+    }
+    state=new_state;
+    
+    return "";
+}
+
+bool SetCommandExecuter::exit_program(){
+    return false;
+}
 

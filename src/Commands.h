@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "Command.h"
 #include "State.h"
 
@@ -36,4 +38,19 @@ public:
      virtual std::string execute(State &state);
      virtual bool exit_program();
 };
+
+CREATE_COMMAND_PARSER_DECLARATION(Set);
+
+
+class  SetCommandExecuter: public CommandExecuter{
+     std::array<int,COLOR_CNT> last;
+     std::array<int,COLOR_CNT> taken;
+     int missed;
+public: 
+     SetCommandExecuter(const std::array<int,COLOR_CNT> &last, const std::array<int,COLOR_CNT> &taken, int missed);
+     virtual std::string execute(State &state);
+     virtual bool exit_program();
+};
+
+
 
