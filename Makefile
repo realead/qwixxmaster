@@ -6,6 +6,12 @@ objects = $(sources:.cpp=.o)
 
 all: $(sources) create
 
+retest: clean test
+
+rerun: clean run
+
+rebuild: clean create
+
 clean :
 	rm -f src/*.o
 
@@ -21,3 +27,4 @@ test: create
 
 run: create
 	bin/quixxmaster
+	
