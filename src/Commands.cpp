@@ -1,5 +1,8 @@
 #include "Commands.h"
 
+#include <sstream>
+
+
 #include "StringUtils.h"
 #include "State.h"
 #include "QuixxException.h"
@@ -9,6 +12,7 @@
 
 REGISTER_COMMAND(ScoreCommandParser);
 REGISTER_COMMAND(ExitCommandParser);
+REGISTER_COMMAND(PrintCommandParser);
 
 
 namespace{
@@ -58,4 +62,28 @@ CommandExecuterPtr ExitCommandParser::parse(const CommandLine &line){
     return CommandExecuterPtr(new ExitCommandExecuter());
 }
 
+///
+std::string PrintCommandExecuter::execute(State &state){
+    std::stringstream out;
+    for(size_t i=0;i<COLOR_CNT;i++){
+            Color color=static_cast<Color>(i);
+            ColorState cs=state.get_color_state(color);  
+            out<<color2str(color)<<":\t"<<cs.cnt<<" taken, last="<<cs.last<<std::endl;
+        }
+    out<<"missed: "<<state.get_missed();
+    return out.str();
+}
+
+bool PrintCommandExecuter::exit_program(){
+    return false;
+}
+
+std::string PrintCommandParser::command_name(){ 
+    return "print";
+}
+
+CommandExecuterPtr PrintCommandParser::parse(const CommandLine &line){   
+    check_command_without_parameters(line, command_name());
+    return CommandExecuterPtr(new PrintCommandExecuter());
+}
 

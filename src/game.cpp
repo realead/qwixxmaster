@@ -8,14 +8,6 @@
 #include "Command.h"
 
 namespace{
-    void print_state(const State &state, std::ostream &out){
-        for(size_t i=0;i<COLOR_CNT;i++){
-            Color color=static_cast<Color>(i);
-            ColorState cs=state.get_color_state(color);  
-            out<<color2str(color)<<":\t"<<cs.cnt<<" taken, last="<<cs.last<<std::endl;
-        }
-        out<<"missed: "<<state.get_missed()<<std::endl;
-    }
     
     void wrong_take_syntax(std::ostream &out, const game::Command &command){
         out<<"unknown syntax: '"<<stringutils::join(command)<<"'. Known syntax either 'take miss' or 'take <color> <number>'"<<std::endl;
@@ -99,11 +91,7 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
     try{
         if(command.empty())
             return true;
-        if(command.at(0)=="print"){
-            print_state(state, out);
-            return true;
-        }
-        
+            
         if(command.at(0)=="take"){
             take(state, out, command);
             return true;
