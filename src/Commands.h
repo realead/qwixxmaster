@@ -3,18 +3,15 @@
 #include "Command.h"
 
 
-class ScoreCommand: public Command{
+class ScoreCommandExecuter: public CommandExecuter{
 public: 
-     virtual std::string check_syntax(const CommandLine &line);
-     virtual std::string check_validity(const State &state, const CommandLine &line);
-     virtual std::string execute(State &state, const CommandLine &line);  
-     
-
+     virtual std::string execute(State &state);
      virtual bool exit_program();
-     
-     
-     
-     static std::string command_name();
 };
 
+class ScoreCommandParser: public CommandParser{
+public:
+    virtual CommandExecuterPtr parse(const CommandLine &line);
+    static std::string command_name();
+};
 

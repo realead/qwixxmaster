@@ -122,22 +122,15 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
     }
     
     try{
-        ::Command &c=CommandDictionary::get_command(command.at(0));
-        bool return_value=true;
-        std::string message=c.check_syntax(command);
-        if(message.empty()){
-            message=c.check_validity(state, command);
-            if(message.empty()){
-                message=c.execute(state, command);
-                return_value=!c.exit_program();
-            }
-        }
-        out<<message<<std::endl;
-        return return_value;
+        CommandExecuterPtr executer=CommandDictionary::get_command_executer(command); 
+        std::string message=executer->execute(state);
+        out<<message;
+        if(!message.empty())
+            out<<std::endl;
+        return !executer->exit_program();
     }       
     catch (QuixxException &ex){
-     // out << ex.what() << std::endl;
-      out<<"unknown command: "<<command.at(0)<<std::endl;
+      out << ex.what() << std::endl;
     }
     return true;
 }

@@ -7,18 +7,18 @@
 
 namespace{
     
-    typedef std::map<std::string, CommandPtr> CommandMap;
+    typedef std::map<std::string, CommandParserPtr> CommandMap;
     CommandMap &get_command_map(){
         static CommandMap map;
         return map;
     }
 }
 
-bool CommandDictionary::register_command(const std::string& command_name, Command *command){
+bool CommandDictionary::register_command(const std::string& command_name, CommandParser *command){
     if(command==NULL)
         THROW_QUIXX("Trying to register NULL as command - this is not allowed");
         
-    CommandPtr c(command);
+    CommandParserPtr c(command);
     CommandMap &map=get_command_map();
     if(map.count(command_name)>0)   
         THROW_QUIXX("Trying to register command "<<command_name<<" twice");
@@ -26,11 +26,12 @@ bool CommandDictionary::register_command(const std::string& command_name, Comman
     return true; 
 }
 
-Command &CommandDictionary::get_command(const std::string& command_name){
+CommandExecuterPtr CommandDictionary::get_command_executer(const CommandLine &line){  
+    const std::string &command_name=line.at(0); 
     CommandMap::const_iterator it=get_command_map().find(command_name);
     if(it==get_command_map().end())
-        THROW_QUIXX("Unknown command "<< command_name);
-    return *(it->second);
+        THROW_QUIXX("unknown command: "<< command_name);
+    return it->second->parse(line);
 }
 
 

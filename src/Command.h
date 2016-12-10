@@ -8,21 +8,28 @@ typedef std::vector<std::string> CommandLine;
 
 class State;
 
-class Command{
+class CommandExecuter{
 public:
-    virtual std::string check_syntax(const CommandLine &line)=0;
-    virtual std::string check_validity(const State &state, const CommandLine &line)=0;
-    virtual std::string execute(State &state, const CommandLine &line)=0;
+    virtual std::string execute(State &state)=0;
     virtual bool exit_program()=0;
-    virtual ~Command(){};
+    virtual ~CommandExecuter(){};
 };
 
-typedef std::unique_ptr<Command> CommandPtr;
+typedef std::unique_ptr<CommandExecuter> CommandExecuterPtr;
+
+
+class CommandParser{
+public:
+    virtual CommandExecuterPtr parse(const CommandLine &line)=0;
+    virtual ~CommandParser(){};
+};
+
+typedef std::unique_ptr<CommandParser> CommandParserPtr;
 
 //singleton!
 namespace CommandDictionary{
-    bool register_command(const std::string& command_name, Command *command);
-    Command &get_command(const std::string& command_name); 
+    bool register_command(const std::string& command_name, CommandParser *command);
+    CommandExecuterPtr get_command_executer(const CommandLine &line);
 };
 
 
