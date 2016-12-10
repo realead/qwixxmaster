@@ -10,13 +10,8 @@
 
 bool game::execute_command(const std::vector<std::string> &command, std::ostream &out){
 
-    try{
-        if(command.empty())
-            return true;
-    }
-    catch (QuixxException &ex){
-      out << ex.what() << std::endl;
-      return true;
+    if(command.empty()){
+          return true;
     }
     
     try{
@@ -30,6 +25,8 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
     catch (QuixxException &ex){
       out << ex.what() << std::endl;
     }
+    
+    
     return true;
 }
 
