@@ -7,12 +7,12 @@
 #include "State.h"
 #include "QuixxException.h"
 
-#define REGISTER_COMMAND(Type)\
-    static bool registered_##Type=CommandDictionary::register_command(Type::command_name(), new Type());
+#define REGISTER_COMMAND(Command)\
+    static bool registered_##Command=CommandDictionary::register_command(Command##CommandParser::command_name(), new Command##CommandParser());
 
-REGISTER_COMMAND(ScoreCommandParser);
-REGISTER_COMMAND(ExitCommandParser);
-REGISTER_COMMAND(PrintCommandParser);
+REGISTER_COMMAND(Score);
+REGISTER_COMMAND(Exit);
+REGISTER_COMMAND(Print);
 
 
 namespace{
