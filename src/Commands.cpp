@@ -16,6 +16,7 @@ REGISTER_COMMAND(Print);
 REGISTER_COMMAND(Take);
 REGISTER_COMMAND(Set);
 REGISTER_COMMAND(Possible);
+REGISTER_COMMAND(Ended);
 
 
 namespace{
@@ -246,4 +247,26 @@ bool PossibleCommandExecuter::exit_program(){
     return false;
 }
 
+
+
+
+///////Ended
+std::string EndedCommandParser::command_name(){ 
+    return "ended";
+}
+
+CommandExecuterPtr EndedCommandParser::parse(const CommandLine &line){   
+    check_command_without_parameters(line, command_name());  
+    return CommandExecuterPtr(new EndedCommandExecuter());
+}
+   
+std::string EndedCommandExecuter::execute(State &state){
+    if(state.ended())
+        return "Yes";
+    return "No";
+}
+
+bool EndedCommandExecuter::exit_program(){
+    return false;
+}
 

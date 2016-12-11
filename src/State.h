@@ -5,7 +5,7 @@
 
 const size_t COLOR_CNT=4;
 enum Color {cRED=0, cYELLOW=1, cGREEN=2, cBLUE=3};
-int CLOSING_NUMBERS[4]={12,12,2,2};
+extern int CLOSING_NUMBERS[4];
 std::string color2str(Color color);
 bool str2color(const std::string &str, Color &color);
     
@@ -34,6 +34,7 @@ class State{
     bool set_missed(int missed);
     
     int score() const; 
+    bool ended() const;
 };
 
 

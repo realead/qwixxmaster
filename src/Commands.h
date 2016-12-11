@@ -64,3 +64,8 @@ public:
      virtual bool exit_program();
 };
 
+
+CREATE_COMMAND_PARSER_DECLARATION(Ended);
+CREATE_COMMAND_EXECUTER_DECLARATION(Ended);
+
+

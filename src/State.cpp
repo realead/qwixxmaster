@@ -1,6 +1,8 @@
 #include "State.h"
 
 
+int CLOSING_NUMBERS[4]={12,12,2,2};
+
 std::string color2str(Color color){
     switch(color){
         case cRED: return "red";
@@ -94,5 +96,10 @@ int State::score() const{
       return res-5*missed;
 }
 
+bool State::ended() const{
+    if(missed>=4)
+        return true;
+    return false;
+}
 
 
