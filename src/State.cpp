@@ -40,17 +40,25 @@ int State::get_missed() const{
 
 
 bool State::take(Color color, int number){
+   if (!take_possible(color, number))
+      return false;
+        
+   //check ok, change
+   unsigned char candidate=static_cast<unsigned char>(number);
+   last[color]=candidate;
+   cnt[color]++;
+   if(candidate==12 && cnt[color]>=5)
+    cnt[color]++;//closed!
+   return true;
+}
+
+
+bool State::take_possible(Color color, int number) const{
    if(number<0 || number>12)
         return false;
    unsigned char candidate=static_cast<unsigned char>(number);
    if(candidate<=last[color])
         return false;
-        
-   //check ok, change
-   last[color]=candidate;
-   cnt[color]++;
-   if(candidate==12 && cnt[color]>=5)
-    cnt[color]++;//closed!
    return true;
 }
 

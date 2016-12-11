@@ -1,0 +1,15 @@
+set 1 7 1 7 1 7 1 7 0
+possible red 7
+possible yellow 7
+possible green 7
+possible blue 7
+possible red 6
+possible yellow 6
+possible green 6
+possible blue 6
+possible red 8
+possible yellow 8
+possible green 8
+possible blue 8
+print
+exit

@@ -53,4 +53,14 @@ public:
 };
 
 
+CREATE_COMMAND_PARSER_DECLARATION(Possible);
+
+class PossibleCommandExecuter: public CommandExecuter{
+     Color color;
+     int number;
+public: 
+     PossibleCommandExecuter(Color color, int number);
+     virtual std::string execute(State &state);
+     virtual bool exit_program();
+};
 

@@ -15,6 +15,7 @@ REGISTER_COMMAND(Exit);
 REGISTER_COMMAND(Print);
 REGISTER_COMMAND(Take);
 REGISTER_COMMAND(Set);
+REGISTER_COMMAND(Possible);
 
 
 namespace{
@@ -203,4 +204,42 @@ std::string SetCommandExecuter::execute(State &state){
 bool SetCommandExecuter::exit_program(){
     return false;
 }
+
+
+//
+std::string PossibleCommandParser::command_name(){ 
+    return "possible";
+}
+
+CommandExecuterPtr PossibleCommandParser::parse(const CommandLine &line){   
+    //normal take
+    if(line.size()!=3){
+       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'take <color> <number>'");
+    }
+    Color color;
+    if(!str2color(line.at(1), color)){
+        THROW_QUIXX("unknown color '"<<line.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'");
+    }
+    int number;
+    if(!stringutils::str2int(line.at(2), number)){
+       THROW_QUIXX("could not convert '"<<line.at(2)<<"' to number");
+    }
+    
+    return CommandExecuterPtr(new PossibleCommandExecuter(color, number));
+}
+
+PossibleCommandExecuter::PossibleCommandExecuter(Color color_, int number_):
+   color(color_), number(number_){}
+   
+   
+std::string PossibleCommandExecuter::execute(State &state){
+    if(state.take_possible(color, number))
+        return "Yes";
+    return "No";
+}
+
+bool PossibleCommandExecuter::exit_program(){
+    return false;
+}
+
 
