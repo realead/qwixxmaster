@@ -17,6 +17,7 @@ REGISTER_COMMAND(Take);
 REGISTER_COMMAND(Set);
 REGISTER_COMMAND(Possible);
 REGISTER_COMMAND(Ended);
+REGISTER_COMMAND(Restart);
 
 
 namespace{
@@ -267,6 +268,27 @@ std::string EndedCommandExecuter::execute(State &state){
 }
 
 bool EndedCommandExecuter::exit_program(){
+    return false;
+}
+
+
+
+///////Restart
+std::string RestartCommandParser::command_name(){ 
+    return "restart";
+}
+
+CommandExecuterPtr RestartCommandParser::parse(const CommandLine &line){   
+    check_command_without_parameters(line, command_name());  
+    return CommandExecuterPtr(new RestartCommandExecuter());
+}
+   
+std::string RestartCommandExecuter::execute(State &state){
+    state=State();
+    return "";
+}
+
+bool RestartCommandExecuter::exit_program(){
     return false;
 }
 
