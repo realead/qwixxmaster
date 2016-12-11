@@ -99,7 +99,11 @@ int State::score() const{
 bool State::ended() const{
     if(missed>=4)
         return true;
-    return false;
+    int closed=0;
+    for(size_t i=0;i<COLOR_CNT;i++)
+            if(last[i]==CLOSING_NUMBERS[i])
+                    closed++;
+    return closed>=2;
 }
 
 
