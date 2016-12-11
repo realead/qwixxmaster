@@ -71,7 +71,11 @@ std::string PrintCommandExecuter::execute(State &state){
     for(size_t i=0;i<COLOR_CNT;i++){
             Color color=static_cast<Color>(i);
             ColorState cs=state.get_color_state(color);  
-            out<<color2str(color)<<":\t"<<cs.cnt<<" taken, last="<<cs.last<<std::endl;
+            out<<color2str(color)<<":\t"<<cs.cnt<<" taken, last=";
+            if(cs.last>=2 && cs.last<=12)
+               out<<cs.last<<std::endl;
+            else
+               out<<"none"<<std::endl;
         }
     out<<"missed: "<<state.get_missed();
     return out.str();

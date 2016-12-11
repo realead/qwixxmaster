@@ -3,9 +3,9 @@ Welcome to quixxmaster!
 >>>cannot parse for color blue
 >>>cannot parse for color red
 >>>cannot parse missed
->>>red:	0 taken, last=0
-yellow:	0 taken, last=0
-green:	0 taken, last=0
-blue:	0 taken, last=0
+>>>red:	0 taken, last=none
+yellow:	0 taken, last=none
+green:	0 taken, last=none
+blue:	0 taken, last=none
 missed: 0
 >>>exiting...

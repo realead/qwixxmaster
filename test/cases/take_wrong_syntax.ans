@@ -3,9 +3,9 @@ Welcome to quixxmaster!
 >>>unknown syntax: 'take green 3 d'. Known syntax either 'take miss' or 'take <color> <number>'
 >>>unknown syntax: 'take'. Known syntax either 'take miss' or 'take <color> <number>'
 >>>unknown color 'greeen'. Known colors are 'red', 'yellow', 'green', and 'blue'
->>>red:	0 taken, last=0
-yellow:	0 taken, last=0
-green:	0 taken, last=0
-blue:	0 taken, last=0
+>>>red:	0 taken, last=none
+yellow:	0 taken, last=none
+green:	0 taken, last=none
+blue:	0 taken, last=none
 missed: 0
 >>>exiting...
