@@ -28,7 +28,7 @@ ColorState::ColorState(unsigned char last_, unsigned char cnt_):
  
 
 
-State::State(): last{0}, cnt{0}, missed(0){};
+State::State(): last{1,1,13,13}, cnt{0}, missed(0){};
 
 ColorState State::get_color_state(Color color) const{
   return ColorState( last[color], cnt[color]);
@@ -57,7 +57,9 @@ bool State::take_possible(Color color, int number) const{
    if(number<0 || number>12)
         return false;
    unsigned char candidate=static_cast<unsigned char>(number);
-   if(candidate<=last[color])
+   if( (color==cRED || color==cYELLOW) && candidate<=last[color])
+        return false;
+   if( (color==cGREEN || color==cBLUE) && candidate>=last[color])
         return false;
    return true;
 }

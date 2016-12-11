@@ -1,6 +1,6 @@
-take red 1
-print
 take red 2
+print
+take red 3
 print
 take yellow 2
 print
