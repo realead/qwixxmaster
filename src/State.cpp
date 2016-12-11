@@ -47,16 +47,18 @@ bool State::take(Color color, int number){
    unsigned char candidate=static_cast<unsigned char>(number);
    last[color]=candidate;
    cnt[color]++;
-   if(candidate==12 && cnt[color]>=5)
+   if(candidate==CLOSING_NUMBERS[color])
     cnt[color]++;//closed!
    return true;
 }
 
 
 bool State::take_possible(Color color, int number) const{
-   if(number<0 || number>12)
+   if(number<2 || number>12)
         return false;
    unsigned char candidate=static_cast<unsigned char>(number);
+   if(CLOSING_NUMBERS[color]==number && cnt[color]<5)
+        return false;
    if( (color==cRED || color==cYELLOW) && candidate<=last[color])
         return false;
    if( (color==cGREEN || color==cBLUE) && candidate>=last[color])

@@ -5,6 +5,7 @@
 
 const size_t COLOR_CNT=4;
 enum Color {cRED=0, cYELLOW=1, cGREEN=2, cBLUE=3};
+int CLOSING_NUMBERS[4]={12,12,2,2};
 std::string color2str(Color color);
 bool str2color(const std::string &str, Color &color);
     

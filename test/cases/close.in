@@ -1,0 +1,7 @@
+set 5 7 5 7 5 7 5 7 0
+take red 12
+take yellow 12
+take green 2
+take blue 2
+print
+exit
