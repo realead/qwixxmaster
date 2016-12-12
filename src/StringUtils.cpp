@@ -3,6 +3,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "QuixxException.h"
+
 std::string stringutils::join(const std::vector<std::string> &strs, const std::string &delimeter){
     std::stringstream res;
     for(size_t i=0;i<strs.size();i++){
@@ -26,6 +28,16 @@ bool stringutils::str2int(const std::string &str, int &result){
         return false;
     }
     return processed==str.size();
+}
+
+
+int stringutils::str2int(const std::string &str){
+    int result;
+    bool flag=str2int(str, result);
+    
+    if(!flag)
+        THROW_QUIXX("Not an integer "<<str);
+    return result;
 }
 
 std::string stringutils::int2str(int value){

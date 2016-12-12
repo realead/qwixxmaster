@@ -8,5 +8,6 @@ namespace stringutils{
     std::vector<std::string> split(const std::string &s, char delim=' ');
     
     bool str2int(const std::string &str, int &result);
+    int str2int(const std::string &str);
     std::string int2str(int value);
 }
