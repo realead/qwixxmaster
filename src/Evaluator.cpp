@@ -14,15 +14,27 @@ namespace{
     return 79*79*79*79*5;
   }
   
+  
+  size_t calc_color_id(const ColorState &cs){
+    return (cs.last-1)*cs.last/2+cs.cnt;  
+  }
+  
+  size_t calc_2color_id(const ColorState &cs1, const ColorState &cs2){
+    size_t first=calc_color_id(cs1);
+    size_t second=calc_color_id(cs2);
+    return std::max(first, second)*COLOR_MAX_ID+std::min(first, second);
+  } 
+  
   size_t calc_id(const State &state){
-      size_t id=0;
-      for(size_t i=0;i<COLOR_CNT;i++){
-         ColorState cs=state.get_color_state(static_cast<Color>(i));
-         if(i>=2)//green/blue are 12..2
-            cs.last=14-cs.last;
-         size_t color_id=(cs.last-1)*cs.last/2+cs.cnt;
-         id=id*COLOR_MAX_ID+color_id;
-      }
+      size_t id=calc_2color_id(state.get_color_state(cRED), state.get_color_state(cYELLOW));
+      
+      ColorState sGreen=state.get_color_state(cGREEN);
+      sGreen.last=14-sGreen.last;
+      
+      ColorState sBlue=state.get_color_state(cBLUE);
+      sBlue.last=14-sBlue.last;
+     
+      id=id*COLOR_MAX_ID*COLOR_MAX_ID+calc_2color_id(sGreen, sBlue);
       return id*5+state.get_missed();
   }
 }
@@ -69,13 +81,16 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
             best=std::max(best, evaluate_state(cur));
             
             //maybe additional color dices can be taken?
-            for(size_t dice=4;dice<=5;dice++)
+            for(size_t dice=4;dice<=5;dice++){
+                if(dice==5 && roll[4]==roll[5])
+                    continue;
                 for(size_t j=0;j<COLOR_CNT;j++){
                     Color color2=static_cast<Color>(i);
                     State cur2=cur;
                     if(cur2.take(color2, roll[color]+roll[dice]))
                        best=std::max(best, evaluate_state(cur2));
                 }
+            }
         }
     }
     
