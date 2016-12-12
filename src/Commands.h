@@ -77,11 +77,14 @@ CREATE_COMMAND_DECLARATION(Evaluate);
 
 
 CREATE_COMMAND_PARSER_DECLARATION(Roll);
-class Roll6CommandExecuter: public CommandExecuter{
-     std::array<int, 6> roll;
+
+template <size_t  len>
+class RollCommandExecuter: public CommandExecuter{
+     std::array<int, len> roll;
 public: 
-     Roll6CommandExecuter(const std::array<int, 6> &roll);
+     RollCommandExecuter(const std::array<int, len> &roll);
      virtual std::string execute(State &state, Evaluator &evaluator);
      virtual bool exit_program();
 };
+
 

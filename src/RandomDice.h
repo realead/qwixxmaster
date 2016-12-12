@@ -5,6 +5,7 @@
 
 
 typedef std::array<int, 6> DiceRoll;
+typedef std::array<int, 2> ShortDiceRoll;
 
 
 namespace RandomDice{

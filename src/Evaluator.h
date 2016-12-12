@@ -18,6 +18,7 @@ public:
     typedef std::pair<float, std::string> MoveInfo;
     typedef std::vector<MoveInfo> MoveInfos;
     MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll);
+    MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll);
 };
 
 

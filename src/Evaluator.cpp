@@ -104,8 +104,8 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
    for (size_t i=0;i<COLOR_CNT;i++){
         Color color=static_cast<Color>(i);
         cur=state;
-        if(cur.take(color, roll[4]+roll[5])){
-            std::string move=color2str(color)+" "+stringutils::int2str(roll[4]+roll[5]);
+        if(cur.take(color, roll.at(4)+roll.at(5))){
+            std::string move=color2str(color)+" "+stringutils::int2str(roll.at(4)+roll.at(5));
             res.push_back(std::make_pair(evaluate_state(cur), move));
             
             //maybe additional color dices can be taken?
@@ -132,5 +132,28 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
     sort(res.begin(), res.end(), std::greater<MoveInfo>());
     return res;
 
+}
+
+
+
+Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const ShortDiceRoll &roll){
+   MoveInfos res;
+   
+   //I'm allowed not to take anything:
+   res.push_back(std::make_pair(evaluate_state(state), "nothing"));
+   
+   //take whites:
+   for (size_t i=0;i<COLOR_CNT;i++){
+        Color color=static_cast<Color>(i);
+        State cur=state;
+        if(cur.take(color, roll.at(0)+roll.at(1))){
+            std::string move=color2str(color)+" "+stringutils::int2str(roll.at(0)+roll.at(1));
+            res.push_back(std::make_pair(evaluate_state(cur), move));
+            
+        }
+    }
+    
+    sort(res.begin(), res.end(), std::greater<MoveInfo>());
+    return res;  
 }
 

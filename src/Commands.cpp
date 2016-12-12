@@ -320,11 +320,14 @@ CommandExecuterPtr EvaluateCommandParser::parse(const CommandLine &line){
 
 
 //
-Roll6CommandExecuter::Roll6CommandExecuter(const std::array<int, 6> &roll_):
+template <size_t  len>
+RollCommandExecuter<len>::RollCommandExecuter(const std::array<int, len> &roll_):
    roll(roll_)
 {}
 
-std::string Roll6CommandExecuter::execute(State &state, Evaluator &evaluator){
+
+template <size_t  len>
+std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator){
     std::stringstream ss;
     Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll);
     size_t cnt=0;
@@ -332,31 +335,49 @@ std::string Roll6CommandExecuter::execute(State &state, Evaluator &evaluator){
            if(cnt!=0)
                 ss<<std::endl;
            ss<<info.second<<": "<<info.first;
+           cnt++;
     }
     return ss.str();
 }
 
-bool Roll6CommandExecuter::exit_program(){
+template <size_t  len>
+bool RollCommandExecuter<len>::exit_program(){
     return false;
 }
+
+template class RollCommandExecuter<6>;
+
 
 std::string RollCommandParser::command_name(){ 
     return "roll";
 }
 
-CommandExecuterPtr RollCommandParser::parse(const CommandLine &line){
-    if(line.size()!=7)
-        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'roll <red_dice> <yellow_dice> <green_dice> <blue_dice> <white_dice1> <white_dice2>'");
-    DiceRoll roll;
-    for(size_t i=1;i<=6;i++){
-        int dice;
-        if(!stringutils::str2int(line.at(i), dice))
-           THROW_QUIXX("could not convert '"<<line.at(i)<<"' to a number");
-        if(dice<1 || dice>6)
-           THROW_QUIXX("dice value must be between 1 and 6 inclusive but is '"<<line.at(i)<<"'");
-        roll[i-1]=dice;
+namespace{
+    template<size_t len>
+    std::array<int, len> parse_dices(const CommandLine &line){
+        std::array<int, len> res;
+        for(size_t i=0;i<len;i++){         
+            int dice;
+            if(!stringutils::str2int(line.at(i+1), dice))
+               THROW_QUIXX("could not convert '"<<line.at(i+1)<<"' to a number");
+            if(dice<1 || dice>6)
+               THROW_QUIXX("dice value must be between 1 and 6 inclusive but is '"<<dice<<"'");
+            res[i]=dice;
+        }
+        return res;
     }
-    return CommandExecuterPtr(new Roll6CommandExecuter(roll));
+}
+
+
+CommandExecuterPtr RollCommandParser::parse(const CommandLine &line){
+    if(line.size()!=7 && line.size()!=3)
+        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is either 'roll <white_dice1> <white_dice2>' or 'roll <red_dice> <yellow_dice> <green_dice> <blue_dice> <white_dice1> <white_dice2>'");
+     
+    if(line.size()==7){
+        return CommandExecuterPtr(new RollCommandExecuter<6>(parse_dices<6>(line)));
+    }
+    //line.size()==3
+    return CommandExecuterPtr(new RollCommandExecuter<2>(parse_dices<2>(line)));
 }
 
 
