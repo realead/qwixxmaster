@@ -4,6 +4,7 @@
 
 #include "Command.h"
 #include "State.h"
+#include "Evaluator.h"
 
 #define CREATE_COMMAND_PARSER_DECLARATION(Name)\
     class Name##CommandParser: public CommandParser{\
@@ -15,7 +16,7 @@
 #define CREATE_COMMAND_EXECUTER_DECLARATION(Name)\
     class  Name##CommandExecuter: public CommandExecuter{\
     public: \
-         virtual std::string execute(State &state);\
+         virtual std::string execute(State &state, Evaluator &evaluator);\
          virtual bool exit_program();\
     };
     
@@ -35,7 +36,7 @@ class  TakeColorCommandExecuter: public CommandExecuter{
      int number;
 public: 
      TakeColorCommandExecuter(Color color, int number);
-     virtual std::string execute(State &state);
+     virtual std::string execute(State &state,  Evaluator &evaluator);
      virtual bool exit_program();
 };
 
@@ -48,7 +49,7 @@ class  SetCommandExecuter: public CommandExecuter{
      int missed;
 public: 
      SetCommandExecuter(const std::array<int,COLOR_CNT> &last, const std::array<int,COLOR_CNT> &taken, int missed);
-     virtual std::string execute(State &state);
+     virtual std::string execute(State &state,  Evaluator &evaluator);
      virtual bool exit_program();
 };
 
@@ -60,7 +61,7 @@ class PossibleCommandExecuter: public CommandExecuter{
      int number;
 public: 
      PossibleCommandExecuter(Color color, int number);
-     virtual std::string execute(State &state);
+     virtual std::string execute(State &state, Evaluator &evaluator);
      virtual bool exit_program();
 };
 

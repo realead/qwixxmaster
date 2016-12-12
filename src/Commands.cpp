@@ -30,7 +30,7 @@ namespace{
  
 }
 
-std::string ScoreCommandExecuter::execute(State &state){
+std::string ScoreCommandExecuter::execute(State &state, Evaluator &evaluator){
     return stringutils::int2str(state.score());
 }
 
@@ -50,7 +50,7 @@ CommandExecuterPtr ScoreCommandParser::parse(const CommandLine &line){
 
 
 ///
-std::string ExitCommandExecuter::execute(State &state){
+std::string ExitCommandExecuter::execute(State &state, Evaluator &evaluator){
     return "";
 }
 
@@ -68,7 +68,7 @@ CommandExecuterPtr ExitCommandParser::parse(const CommandLine &line){
 }
 
 ///
-std::string PrintCommandExecuter::execute(State &state){
+std::string PrintCommandExecuter::execute(State &state, Evaluator &evaluator){
     std::stringstream out;
     for(size_t i=0;i<COLOR_CNT;i++){
             Color color=static_cast<Color>(i);
@@ -98,7 +98,7 @@ CommandExecuterPtr PrintCommandParser::parse(const CommandLine &line){
 
 
 ///
-std::string TakeMissCommandExecuter::execute(State &state){
+std::string TakeMissCommandExecuter::execute(State &state, Evaluator &evaluator){
     state.add_miss();
     return "";
 }
@@ -146,7 +146,7 @@ TakeColorCommandExecuter::TakeColorCommandExecuter(Color color_, int number_):
    color(color_), number(number_){}
    
    
-std::string TakeColorCommandExecuter::execute(State &state){
+std::string TakeColorCommandExecuter::execute(State &state, Evaluator &evaluator){
     if(!state.take(color, number)){
             THROW_QUIXX("invalid move");
     }
@@ -190,7 +190,7 @@ SetCommandExecuter::SetCommandExecuter(const std::array<int,COLOR_CNT> &last_, c
    last(last_), taken(taken_), missed(missed_){}
    
    
-std::string SetCommandExecuter::execute(State &state){
+std::string SetCommandExecuter::execute(State &state, Evaluator &evaluator){
     State new_state(state);
     for(size_t i=0;i<COLOR_CNT;i++){
         Color color=static_cast<Color>(i); 
@@ -238,7 +238,7 @@ PossibleCommandExecuter::PossibleCommandExecuter(Color color_, int number_):
    color(color_), number(number_){}
    
    
-std::string PossibleCommandExecuter::execute(State &state){
+std::string PossibleCommandExecuter::execute(State &state, Evaluator &evaluator){
     if(state.take_possible(color, number))
         return "Yes";
     return "No";
@@ -261,7 +261,7 @@ CommandExecuterPtr EndedCommandParser::parse(const CommandLine &line){
     return CommandExecuterPtr(new EndedCommandExecuter());
 }
    
-std::string EndedCommandExecuter::execute(State &state){
+std::string EndedCommandExecuter::execute(State &state, Evaluator &evaluator){
     if(state.ended())
         return "Yes";
     return "No";
@@ -283,7 +283,7 @@ CommandExecuterPtr RestartCommandParser::parse(const CommandLine &line){
     return CommandExecuterPtr(new RestartCommandExecuter());
 }
    
-std::string RestartCommandExecuter::execute(State &state){
+std::string RestartCommandExecuter::execute(State &state, Evaluator &evaluator){
     state=State();
     return "";
 }

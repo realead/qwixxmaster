@@ -11,8 +11,7 @@
 class game{
 private:
     State state;  
-    std::unique_ptr<Evaluator> evaluator;
-    size_t sampling_number;
+    Evaluator evaluator;
 public:
     game(size_t sampling_number);
     typedef std::vector<std::string> Command;
