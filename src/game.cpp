@@ -8,6 +8,9 @@
 #include "Command.h"
 
 
+
+game::game(size_t sampling_number_): sampling_number(sampling_number_){}
+
 bool game::execute_command(const std::vector<std::string> &command, std::ostream &out){
 
     if(command.empty()){
@@ -16,7 +19,7 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
     
     if(command.at(0)=="evaluate"){
         if(evaluator==NULL)
-            evaluator.reset(new Evaluator());
+            evaluator.reset(new Evaluator(sampling_number));
         out<<"Expected score: "<<evaluator->evaluate_state(state)<<std::endl;
         return true;
     }

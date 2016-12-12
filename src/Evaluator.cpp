@@ -27,7 +27,10 @@ namespace{
 }
 
 
-Evaluator::Evaluator(): mem(calc_max_index()+1, -1.0){}
+Evaluator::Evaluator(size_t sampling_number_): 
+   sampling_number(sampling_number_),
+   mem(calc_max_index()+1, -1.0)
+{}
 
 
 float Evaluator::evaluate_state(const State &state){
@@ -38,11 +41,10 @@ float Evaluator::evaluate_state(const State &state){
         }
         else{
            float value=0;
-           size_t N=5;
-           for(size_t i=0;i<N;i++)
+           for(size_t i=0;i<sampling_number;i++)
               value+=evaluate_roll(state, RandomDice::random_roll());
                     
-           mem.at(id)=value/N;
+           mem.at(id)=value/sampling_number;
         }
      }
      
