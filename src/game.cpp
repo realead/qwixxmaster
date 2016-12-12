@@ -14,6 +14,13 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
           return true;
     }
     
+    if(command.at(0)=="evaluate"){
+        if(evaluator==NULL)
+            evaluator.reset(new Evaluator());
+        out<<"Expected score: "<<evaluator->evaluate_state(state)<<std::endl;
+        return true;
+    }
+    
     try{
         CommandExecuterPtr executer=CommandDictionary::get_command_executer(command); 
         std::string message=executer->execute(state);
