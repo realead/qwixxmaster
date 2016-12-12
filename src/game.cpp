@@ -17,11 +17,6 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
           return true;
     }
     
-    if(command.at(0)=="evaluate"){
-        out<<"Expected score: "<<evaluator.evaluate_state(state)<<std::endl;
-        return true;
-    }
-    
     if(command.at(0)=="roll"){  
         DiceRoll roll;
         for(size_t i=1;i<=6;i++){

@@ -20,6 +20,9 @@ REGISTER_COMMAND(Ended);
 REGISTER_COMMAND(Restart);
 
 
+REGISTER_COMMAND(Evaluate);
+
+
 namespace{
   void check_command_without_parameters(const CommandLine &line, const std::string &command_name){
     if(line.size()!=1)
@@ -291,4 +294,29 @@ std::string RestartCommandExecuter::execute(State &state, Evaluator &evaluator){
 bool RestartCommandExecuter::exit_program(){
     return false;
 }
+
+
+
+//Evaluate
+std::string EvaluateCommandExecuter::execute(State &state, Evaluator &evaluator){
+    std::stringstream ss;
+    ss<<"Expected score: "<<evaluator.evaluate_state(state);
+    return ss.str();
+}
+
+bool EvaluateCommandExecuter::exit_program(){
+    return false;
+}
+
+std::string EvaluateCommandParser::command_name(){ 
+    return "evaluate";
+}
+
+CommandExecuterPtr EvaluateCommandParser::parse(const CommandLine &line){
+    check_command_without_parameters(line, command_name());
+    return CommandExecuterPtr(new EvaluateCommandExecuter());
+}
+
+
+
 
