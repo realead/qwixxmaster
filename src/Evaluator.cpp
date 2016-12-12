@@ -5,6 +5,7 @@
 
 #include "State.h"
 #include "RandomDice.h"
+#include "StringUtils.h"
 
 namespace{
 
@@ -88,5 +89,48 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
         }  
     
     return best;
+}
+
+
+Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll){
+   MoveInfos res;
+   
+   //always an option: take miss
+   State cur=state;
+   cur.add_miss();
+   res.push_back(std::make_pair(evaluate_state(cur), "miss"));
+   
+   //take whites:
+   for (size_t i=0;i<COLOR_CNT;i++){
+        Color color=static_cast<Color>(i);
+        cur=state;
+        if(cur.take(color, roll[4]+roll[5])){
+            std::string move=color2str(color)+" "+stringutils::int2str(roll[4]+roll[5]);
+            res.push_back(std::make_pair(evaluate_state(cur), move));
+            
+            //maybe additional color dices can be taken?
+            for(size_t dice=4;dice<=5;dice++)
+                for(size_t j=0;j<COLOR_CNT;j++){
+                    Color color2=static_cast<Color>(i);
+                    State cur2=cur;
+                    if(cur2.take(color2, roll[color]+roll[dice]))
+                        res.push_back(std::make_pair(evaluate_state(cur2), move+", "+color2str(color2)+" "+stringutils::int2str(roll[color]+roll[dice])));
+                }
+        }
+    }
+    
+    // no whites!
+    for(size_t dice=4;dice<=5;dice++)
+        for(size_t j=0;j<COLOR_CNT;j++){
+            Color color=static_cast<Color>(j);
+                 cur=state;
+                 if(cur.take(color, roll[color]+roll[dice]))
+                       res.push_back(std::make_pair(evaluate_state(cur), color2str(color)+" "+stringutils::int2str(roll[color]+roll[dice])));
+        }  
+    
+    
+    sort(res.begin(), res.end(), std::greater<MoveInfo>());
+    return res;
+
 }
 
