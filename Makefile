@@ -16,10 +16,10 @@ clean :
 	rm -f src/*.o
 
 %.o : %.cpp
-	$(CC) -std=c++11 -O2 -c $< -o $> $@
+	$(CC) -g -std=c++11 -O2 -c $< -o $> $@
 
 create : $(objects)
-	$(CC) $(objects) -o bin/quixxmaster
+	$(CC) -g $(objects) -o bin/quixxmaster
 	
 	
 test: create
@@ -28,3 +28,6 @@ test: create
 run: create
 	bin/quixxmaster
 	
+testtime: create
+	/usr/bin/time bin/quixxmaster < test/time_cases/small.in
+	/usr/bin/time bin/quixxmaster < test/time_cases/medium.in
