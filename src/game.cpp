@@ -17,17 +17,6 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
           return true;
     }
     
-    if(command.at(0)=="roll"){  
-        DiceRoll roll;
-        for(size_t i=1;i<=6;i++){
-            roll[i-1]=stringutils::str2int(command.at(i));
-        }
-        Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll);
-        for(const Evaluator::MoveInfo &info:infos)
-           out<<info.second<<": "<<info.first<<std::endl;
-        return true;
-    }
-    
     try{
         CommandExecuterPtr executer=CommandDictionary::get_command_executer(command); 
         std::string message=executer->execute(state, evaluator);

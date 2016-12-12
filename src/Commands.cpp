@@ -21,6 +21,7 @@ REGISTER_COMMAND(Restart);
 
 
 REGISTER_COMMAND(Evaluate);
+REGISTER_COMMAND(Roll);
 
 
 namespace{
@@ -317,6 +318,46 @@ CommandExecuterPtr EvaluateCommandParser::parse(const CommandLine &line){
     return CommandExecuterPtr(new EvaluateCommandExecuter());
 }
 
+
+//
+Roll6CommandExecuter::Roll6CommandExecuter(const std::array<int, 6> &roll_):
+   roll(roll_)
+{}
+
+std::string Roll6CommandExecuter::execute(State &state, Evaluator &evaluator){
+    std::stringstream ss;
+    Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll);
+    size_t cnt=0;
+    for(const Evaluator::MoveInfo &info:infos){
+           if(cnt!=0)
+                ss<<std::endl;
+           ss<<info.second<<": "<<info.first;
+    }
+    return ss.str();
+}
+
+bool Roll6CommandExecuter::exit_program(){
+    return false;
+}
+
+std::string RollCommandParser::command_name(){ 
+    return "roll";
+}
+
+CommandExecuterPtr RollCommandParser::parse(const CommandLine &line){
+    if(line.size()!=7)
+        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'roll <red_dice> <yellow_dice> <green_dice> <blue_dice> <white_dice1> <white_dice2>'");
+    DiceRoll roll;
+    for(size_t i=1;i<=6;i++){
+        int dice;
+        if(!stringutils::str2int(line.at(i), dice))
+           THROW_QUIXX("could not convert '"<<line.at(i)<<"' to a number");
+        if(dice<1 || dice>6)
+           THROW_QUIXX("dice value must be between 1 and 6 inclusive but is '"<<line.at(i)<<"'");
+        roll[i-1]=dice;
+    }
+    return CommandExecuterPtr(new Roll6CommandExecuter(roll));
+}
 
 
 
