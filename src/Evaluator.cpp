@@ -26,15 +26,18 @@ namespace{
   } 
   
   size_t calc_id(const State &state){
-      size_t id=calc_2color_id(state.get_color_state(cRED), state.get_color_state(cYELLOW));
+      size_t id1=calc_2color_id(state.get_color_state(cRED), state.get_color_state(cYELLOW));
       
       ColorState sGreen=state.get_color_state(cGREEN);
       sGreen.last=14-sGreen.last;
       
       ColorState sBlue=state.get_color_state(cBLUE);
       sBlue.last=14-sBlue.last;
-     
-      id=id*COLOR_MAX_ID*COLOR_MAX_ID+calc_2color_id(sGreen, sBlue);
+       
+      size_t id2=calc_2color_id(sGreen, sBlue);
+      
+      
+      size_t id=std::max(id1, id2)*COLOR_MAX_ID*COLOR_MAX_ID+std::min(id1, id2);
       return id*5+state.get_missed();
   }
 }
