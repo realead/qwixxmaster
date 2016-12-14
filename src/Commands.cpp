@@ -22,6 +22,7 @@ REGISTER_COMMAND(Restart);
 
 REGISTER_COMMAND(Evaluate);
 REGISTER_COMMAND(Roll);
+REGISTER_COMMAND(Autoplay);
 
 
 namespace{
@@ -380,5 +381,71 @@ CommandExecuterPtr RollCommandParser::parse(const CommandLine &line){
     return CommandExecuterPtr(new RollCommandExecuter<2>(parse_dices<2>(line)));
 }
 
+
+
+
+
+//Autoplay
+namespace{
+    std::vector<CommandExecuterPtr> translate_to_executers(const Evaluator::MoveInfos &infos){
+        std::vector<CommandExecuterPtr> res;
+        if(infos.empty())
+            return res;
+            
+        const Evaluator::MoveInfo &info=infos.front();
+        if(info.second=="miss"){
+            res.push_back(CommandExecuterPtr(new TakeMissCommandExecuter()));
+            return res;
+        }
+        std::vector<std::string> splitted=stringutils::split(info.second, ',');
+        for(const std::string &s : splitted){
+            std::vector<std::string> spLine=stringutils::split(s, ' ');
+            Color color; int number;
+            if(!str2color(spLine.at(0), color) || !stringutils::str2int(spLine.at(1), number)){
+                    THROW_QUIXX("we have an internal problem... call ghostbusters!");
+            }
+            res.push_back(CommandExecuterPtr(new TakeColorCommandExecuter(color, number)));
+        } 
+        return res;
+    }
+}
+std::string AutoplayCommandExecuter::execute(State &state, Evaluator &evaluator){
+    std::stringstream ss;
+    DiceRoller roller(seed);
+    size_t move_number=0;
+    while(!state.ended()){
+      ss<<"move "<<move_number<<" expected score: "<<evaluator.evaluate_state(state)<<std::endl;
+      std::vector<CommandExecuterPtr> commands=translate_to_executers(evaluator.get_roll_evaluation(state, roller.roll()));
+      for(const CommandExecuterPtr &command : commands){
+        command->execute(state, evaluator);
+      }
+      move_number++;
+    }
+    
+    ss<<"Score: "<<state.score();
+    return ss.str();
+}
+
+bool AutoplayCommandExecuter::exit_program(){
+    return false;
+}
+
+std::string AutoplayCommandParser::command_name(){ 
+    return "autoplay";
+}
+
+CommandExecuterPtr AutoplayCommandParser::parse(const CommandLine &line){
+    if(line.size()!=2)
+       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'autoplay <seed>'");
+    int seed;   
+    if (!stringutils::str2int(line.at(1), seed))
+       THROW_QUIXX("could not convert '"<<line.at(1)<<"' to a number");
+       
+    return CommandExecuterPtr(new AutoplayCommandExecuter(seed));
+}
+
+AutoplayCommandExecuter::AutoplayCommandExecuter(size_t seed_):
+    seed(seed_)
+{}
 
 

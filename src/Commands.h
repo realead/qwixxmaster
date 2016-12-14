@@ -88,3 +88,15 @@ public:
 };
 
 
+
+
+CREATE_COMMAND_PARSER_DECLARATION(Autoplay);
+
+class AutoplayCommandExecuter: public CommandExecuter{
+     size_t seed;
+public: 
+     AutoplayCommandExecuter(size_t seed);
+     virtual std::string execute(State &state, Evaluator &evaluator);
+     virtual bool exit_program();
+};
+

@@ -132,7 +132,7 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
                     Color color2=static_cast<Color>(i);
                     State cur2=cur;
                     if(cur2.take(color2, roll[color]+roll[dice]))
-                        res.push_back(std::make_pair(evaluate_state(cur2), move+", "+color2str(color2)+" "+stringutils::int2str(roll[color]+roll[dice])));
+                        res.push_back(std::make_pair(evaluate_state(cur2), move+","+color2str(color2)+" "+stringutils::int2str(roll[color]+roll[dice])));
                 }
         }
     }
