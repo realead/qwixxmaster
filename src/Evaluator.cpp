@@ -8,21 +8,22 @@
 #include "StringUtils.h"
 
 namespace{
-
-  size_t COLOR_MAX_ID=79;
-  size_t calc_max_index(){
-    return 79*79*79*79*5;
-  }
-  
-  
-  size_t calc_color_id(const ColorState &cs){
-    return (cs.last-1)*cs.last/2+cs.cnt;  
-  }
   
   size_t encode_min_max_0_based(size_t first, size_t second){
     size_t max=std::max(first, second);
     size_t min=std::min(first, second);
     return max*(max+1)/2+min;
+  }
+
+  size_t COLOR_MAX_ID=78;
+  size_t calc_max_index(){
+    size_t two_colors=encode_min_max_0_based(COLOR_MAX_ID, COLOR_MAX_ID);
+    return (encode_min_max_0_based(two_colors, two_colors)+1)*5;
+  }
+  
+  
+  size_t calc_color_id(const ColorState &cs){
+    return (cs.last-1)*cs.last/2+cs.cnt;  
   }
   
   size_t calc_2color_id(const ColorState &cs1, const ColorState &cs2){
