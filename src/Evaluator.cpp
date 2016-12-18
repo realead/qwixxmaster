@@ -19,12 +19,16 @@ namespace{
     return (cs.last-1)*cs.last/2+cs.cnt;  
   }
   
-  size_t calc_2color_id(const ColorState &cs1, const ColorState &cs2){
-    size_t first=calc_color_id(cs1);
-    size_t second=calc_color_id(cs2);
+  size_t encode_min_max_0_based(size_t first, size_t second){
     size_t max=std::max(first, second);
     size_t min=std::min(first, second);
     return max*(max+1)/2+min;
+  }
+  
+  size_t calc_2color_id(const ColorState &cs1, const ColorState &cs2){
+    size_t first=calc_color_id(cs1);
+    size_t second=calc_color_id(cs2);
+    return encode_min_max_0_based(first, second);
   } 
   
   size_t calc_id(const State &state){
@@ -39,7 +43,7 @@ namespace{
       size_t id2=calc_2color_id(sGreen, sBlue);
       
       
-      size_t id=std::max(id1, id2)*COLOR_MAX_ID*COLOR_MAX_ID+std::min(id1, id2);
+      size_t id=encode_min_max_0_based(id1, id2);
       return id*5+state.get_missed();
   }
 }
