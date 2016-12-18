@@ -35,9 +35,8 @@ int main(int argc, char *argv[]){
     while(true){
        std::cout<<">>>";
        std::string line;
-       std::getline(std::cin, line);
-       
-       if(!g.execute_command(stringutils::split(line), std::cout))
+       if(!std::getline(std::cin, line) ||
+          !g.execute_command(stringutils::split(line), std::cout))
             break;
     }
     
