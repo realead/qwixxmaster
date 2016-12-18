@@ -22,7 +22,9 @@ namespace{
   size_t calc_2color_id(const ColorState &cs1, const ColorState &cs2){
     size_t first=calc_color_id(cs1);
     size_t second=calc_color_id(cs2);
-    return std::max(first, second)*COLOR_MAX_ID+std::min(first, second);
+    size_t max=std::max(first, second);
+    size_t min=std::min(first, second);
+    return max*(max+1)/2+min;
   } 
   
   size_t calc_id(const State &state){
