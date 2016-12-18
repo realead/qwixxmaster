@@ -28,8 +28,11 @@ def execute_process(command, input_file, ok_code=[0]):
     
 #find test cases:
 import glob
+import sys
 
-input_files=glob.glob("test/cases/*.in")
+test_case_dir=sys.argv[1]
+
+input_files=glob.glob(test_case_dir+"/*.in")
 
 
 wrong=0
