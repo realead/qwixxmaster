@@ -12,7 +12,7 @@ class Evaluator;
 class CommandExecuter{
 public:
     virtual std::string execute(State &state, Evaluator &evaluator)=0;
-    virtual bool exit_program()=0;
+    virtual bool exit_program() const {return false;};
     virtual ~CommandExecuter(){};
 };
 

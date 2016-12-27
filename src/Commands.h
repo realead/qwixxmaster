@@ -17,16 +17,23 @@
     class  Name##CommandExecuter: public CommandExecuter{\
     public: \
          virtual std::string execute(State &state, Evaluator &evaluator);\
-         virtual bool exit_program();\
     };
     
 #define CREATE_COMMAND_DECLARATION(Name)\
     CREATE_COMMAND_EXECUTER_DECLARATION(Name);\
     CREATE_COMMAND_PARSER_DECLARATION(Name);
 
+
 CREATE_COMMAND_DECLARATION(Score);
-CREATE_COMMAND_DECLARATION(Exit);
 CREATE_COMMAND_DECLARATION(Print);
+
+
+CREATE_COMMAND_PARSER_DECLARATION(Exit);
+class  ExitCommandExecuter: public CommandExecuter{
+public: 
+     virtual std::string execute(State &state, Evaluator &evaluator);
+     virtual bool exit_program() const;
+};
 
 CREATE_COMMAND_PARSER_DECLARATION(Take);
 CREATE_COMMAND_EXECUTER_DECLARATION(TakeMiss);
@@ -37,7 +44,6 @@ class  TakeColorCommandExecuter: public CommandExecuter{
 public: 
      TakeColorCommandExecuter(Color color, int number);
      virtual std::string execute(State &state,  Evaluator &evaluator);
-     virtual bool exit_program();
 };
 
 CREATE_COMMAND_PARSER_DECLARATION(Set);
@@ -50,7 +56,6 @@ class  SetCommandExecuter: public CommandExecuter{
 public: 
      SetCommandExecuter(const std::array<int,COLOR_CNT> &last, const std::array<int,COLOR_CNT> &taken, int missed);
      virtual std::string execute(State &state,  Evaluator &evaluator);
-     virtual bool exit_program();
 };
 
 
@@ -62,7 +67,6 @@ class PossibleCommandExecuter: public CommandExecuter{
 public: 
      PossibleCommandExecuter(Color color, int number);
      virtual std::string execute(State &state, Evaluator &evaluator);
-     virtual bool exit_program();
 };
 
 
@@ -84,7 +88,6 @@ class RollCommandExecuter: public CommandExecuter{
 public: 
      RollCommandExecuter(const std::array<int, len> &roll);
      virtual std::string execute(State &state, Evaluator &evaluator);
-     virtual bool exit_program();
 };
 
 
@@ -97,6 +100,5 @@ class AutoplayCommandExecuter: public CommandExecuter{
 public: 
      AutoplayCommandExecuter(size_t seed);
      virtual std::string execute(State &state, Evaluator &evaluator);
-     virtual bool exit_program();
 };
 

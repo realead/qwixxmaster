@@ -39,10 +39,6 @@ std::string ScoreCommandExecuter::execute(State &state, Evaluator &evaluator){
     return stringutils::int2str(state.score());
 }
 
-bool ScoreCommandExecuter::exit_program(){
-    return false;
-}
-
 std::string ScoreCommandParser::command_name(){ 
     return "score";
 }
@@ -59,7 +55,7 @@ std::string ExitCommandExecuter::execute(State &state, Evaluator &evaluator){
     return "";
 }
 
-bool ExitCommandExecuter::exit_program(){
+bool ExitCommandExecuter::exit_program() const{
     return true;
 }
 
@@ -88,10 +84,6 @@ std::string PrintCommandExecuter::execute(State &state, Evaluator &evaluator){
     return out.str();
 }
 
-bool PrintCommandExecuter::exit_program(){
-    return false;
-}
-
 std::string PrintCommandParser::command_name(){ 
     return "print";
 }
@@ -108,9 +100,6 @@ std::string TakeMissCommandExecuter::execute(State &state, Evaluator &evaluator)
     return "";
 }
 
-bool TakeMissCommandExecuter::exit_program(){
-    return false;
-}
 
 std::string TakeCommandParser::command_name(){ 
     return "take";
@@ -156,10 +145,6 @@ std::string TakeColorCommandExecuter::execute(State &state, Evaluator &evaluator
             THROW_QUIXX("invalid move");
     }
     return "";
-}
-
-bool TakeColorCommandExecuter::exit_program(){
-    return false;
 }
 
 
@@ -212,10 +197,6 @@ std::string SetCommandExecuter::execute(State &state, Evaluator &evaluator){
     return "";
 }
 
-bool SetCommandExecuter::exit_program(){
-    return false;
-}
-
 
 //
 std::string PossibleCommandParser::command_name(){ 
@@ -249,11 +230,6 @@ std::string PossibleCommandExecuter::execute(State &state, Evaluator &evaluator)
     return "No";
 }
 
-bool PossibleCommandExecuter::exit_program(){
-    return false;
-}
-
-
 
 
 ///////Ended
@@ -272,12 +248,6 @@ std::string EndedCommandExecuter::execute(State &state, Evaluator &evaluator){
     return "No";
 }
 
-bool EndedCommandExecuter::exit_program(){
-    return false;
-}
-
-
-
 ///////Restart
 std::string RestartCommandParser::command_name(){ 
     return "restart";
@@ -293,11 +263,6 @@ std::string RestartCommandExecuter::execute(State &state, Evaluator &evaluator){
     return "";
 }
 
-bool RestartCommandExecuter::exit_program(){
-    return false;
-}
-
-
 
 //Evaluate
 std::string EvaluateCommandExecuter::execute(State &state, Evaluator &evaluator){
@@ -306,9 +271,6 @@ std::string EvaluateCommandExecuter::execute(State &state, Evaluator &evaluator)
     return ss.str();
 }
 
-bool EvaluateCommandExecuter::exit_program(){
-    return false;
-}
 
 std::string EvaluateCommandParser::command_name(){ 
     return "evaluate";
@@ -341,10 +303,6 @@ std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator
     return ss.str();
 }
 
-template <size_t  len>
-bool RollCommandExecuter<len>::exit_program(){
-    return false;
-}
 
 template class RollCommandExecuter<6>;
 
@@ -424,10 +382,6 @@ std::string AutoplayCommandExecuter::execute(State &state, Evaluator &evaluator)
     
     ss<<"Score: "<<state.score();
     return ss.str();
-}
-
-bool AutoplayCommandExecuter::exit_program(){
-    return false;
 }
 
 std::string AutoplayCommandParser::command_name(){ 
