@@ -49,16 +49,20 @@ namespace{
   }
 }
 
+namespace {
+  double STATE_NOT_EVALUATED=-300.0;//actually -16 is the worst what can happen!
+  
+}
 
 Evaluator::Evaluator(size_t sampling_number_): 
    sampling_number(sampling_number_),
-   mem(calc_max_index()+1, -1.0)
+   mem(calc_max_index()+1, STATE_NOT_EVALUATED)
 {}
 
 
 float Evaluator::evaluate_state(const State &state){
      size_t id=calc_id(state);
-     if(mem.at(id)<0.0){
+     if(mem.at(id)==STATE_NOT_EVALUATED){
         if(state.ended()){
            mem.at(id)=state.score();
         }
