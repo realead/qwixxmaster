@@ -108,23 +108,10 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
         cur=state;
         if(cur.take(color, roll[4]+roll[5])){
             best=std::max(best, evaluate_state(cur));
-            
-            //maybe additional color dices can be taken?
-            for(size_t dice=4;dice<=5;dice++){
-                if(dice==5 && roll[4]==roll[5])
-                    continue;
-                for(size_t j=0;j<COLOR_CNT;j++){
-                    Color color2=static_cast<Color>(i);
-                    State cur2=cur;
-                    if(cur2.take(color2, roll[color]+roll[dice]))
-                       best=std::max(best, evaluate_state(cur2));
-                }
-            }
+            best=std::max(best, evaluate_without_whites(cur, roll));
         }
     }
-    
      
-    
     return std::max(best, evaluate_without_whites(state, roll));
 }
 

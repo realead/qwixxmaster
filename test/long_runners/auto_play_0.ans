@@ -1,23 +1,34 @@
 Welcome to quixxmaster!
->>>move 0 expected score: 152.824
-move 1 expected score: 152.824
-move 2 expected score: 141.306
-move 3 expected score: 150.263
-move 4 expected score: 139.975
-move 5 expected score: 129.74
-move 6 expected score: 128.869
-move 7 expected score: 125.92
-move 8 expected score: 128.144
-move 9 expected score: 115.622
-move 10 expected score: 108.645
-move 11 expected score: 102.516
-move 12 expected score: 95.8764
-move 13 expected score: 85.5709
-move 14 expected score: 77.1748
-move 15 expected score: 71.4458
-move 16 expected score: 68.3818
-move 17 expected score: 70.2471
-move 18 expected score: 74.5098
-move 19 expected score: 72.8906
-Score: 29
+>>>move 0 expected score: 160.84
+move 1 expected score: 161.131
+move 2 expected score: 145.864
+move 3 expected score: 149.968
+move 4 expected score: 145.662
+move 5 expected score: 150.771
+move 6 expected score: 147.441
+move 7 expected score: 140.643
+move 8 expected score: 140.816
+move 9 expected score: 142.452
+move 10 expected score: 135.809
+move 11 expected score: 138.237
+move 12 expected score: 124.079
+move 13 expected score: 127.205
+move 14 expected score: 125.918
+move 15 expected score: 122.04
+move 16 expected score: 116.601
+move 17 expected score: 123.112
+move 18 expected score: 130.286
+move 19 expected score: 111.753
+move 20 expected score: 109.149
+move 21 expected score: 109.344
+move 22 expected score: 105.679
+move 23 expected score: 96.1875
+move 24 expected score: 90.502
+move 25 expected score: 97.625
+move 26 expected score: 113
+move 27 expected score: 113
+move 28 expected score: 113
+move 29 expected score: 115.5
+move 30 expected score: 107.5
+Score: 103
 >>>exiting...
