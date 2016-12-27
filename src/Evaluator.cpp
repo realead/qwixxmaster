@@ -116,6 +116,17 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
 }
 
 
+
+void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix){
+    for(size_t dice=4;dice<=5;dice++)
+        for(size_t j=0;j<COLOR_CNT;j++){
+            Color color=static_cast<Color>(j);
+            State cur=state;
+            if(cur.take(color, roll[color]+roll[dice]))
+                       res.push_back(std::make_pair(evaluate_state(cur),prefix+ color2str(color)+" "+stringutils::int2str(roll[color]+roll[dice])));
+        }
+}
+
 Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll){
    MoveInfos res;
    
@@ -144,15 +155,7 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
     }
     
     // no whites!
-    for(size_t dice=4;dice<=5;dice++)
-        for(size_t j=0;j<COLOR_CNT;j++){
-            Color color=static_cast<Color>(j);
-                 cur=state;
-                 if(cur.take(color, roll[color]+roll[dice]))
-                       res.push_back(std::make_pair(evaluate_state(cur), color2str(color)+" "+stringutils::int2str(roll[color]+roll[dice])));
-        }  
-    
-    
+    evaluate_without_whites(state, roll, res, "");
     sort(res.begin(), res.end(), std::greater<MoveInfo>());
     return res;
 

@@ -21,6 +21,8 @@ public:
     typedef std::vector<MoveInfo> MoveInfos;
     MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll);
     MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll);
+private:  
+    void evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix); 
 };
 
 
