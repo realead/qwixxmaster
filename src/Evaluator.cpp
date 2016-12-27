@@ -82,13 +82,16 @@ float Evaluator::evaluate_state(const State &state){
 float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll){
     // no whites!
     float best=-1e6;
-    for(size_t dice=4;dice<=5;dice++)
+    for(size_t dice=4;dice<=5;dice++){
+        if(dice==5 && roll[4]==roll[5])
+               break;
         for(size_t j=0;j<COLOR_CNT;j++){
             Color color=static_cast<Color>(j);
             State cur=state;
             if(cur.take(color, roll[color]+roll[dice]))
                    best=std::max(best, evaluate_state(cur));
-        } 
+        }
+    } 
     return best;
 }
 
