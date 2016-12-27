@@ -16,7 +16,9 @@ struct ColorState{
    ColorState(unsigned char last, unsigned char cnt); 
 };   
     
+class Evaluator;
 class State{
+  friend class Evaluator;
   private:
     unsigned char last[COLOR_CNT];
     unsigned char cnt[COLOR_CNT];
