@@ -6,6 +6,7 @@
 #include "State.h"
 #include "RandomDice.h"
 #include "StringUtils.h"
+#include "MemoryManager.h"
 
 namespace{
   
@@ -181,5 +182,14 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Sh
     
     sort(res.begin(), res.end(), std::greater<MoveInfo>());
     return res;  
+}
+
+
+void Evaluator::save_memory_to_file(const std::string &filename) const{
+   MemoryManager::save_memory(filename, mem);
+}
+
+void Evaluator::load_memory_from_file(const std::string &filename){
+  MemoryManager::load_memory(filename, mem);
 }
 

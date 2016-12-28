@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "RandomDice.h"
 
@@ -21,6 +22,10 @@ public:
     typedef std::vector<MoveInfo> MoveInfos;
     MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll);
     MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll);
+    
+    
+    void save_memory_to_file(const std::string &filename) const;
+    void load_memory_from_file(const std::string &filename);
 private:  
     void evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix); 
 };

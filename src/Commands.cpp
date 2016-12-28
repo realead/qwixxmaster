@@ -25,6 +25,10 @@ REGISTER_COMMAND(Roll);
 REGISTER_COMMAND(Autoplay);
 
 
+REGISTER_COMMAND(Save);
+REGISTER_COMMAND(Load);
+
+
 namespace{
   void check_command_without_parameters(const CommandLine &line, const std::string &command_name){
     if(line.size()!=1)
@@ -402,4 +406,49 @@ AutoplayCommandExecuter::AutoplayCommandExecuter(size_t seed_):
     seed(seed_)
 {}
 
+
+
+//SAVE:
+
+std::string SaveCommandParser::command_name(){ 
+    return "save";
+}
+
+CommandExecuterPtr SaveCommandParser::parse(const CommandLine &line){
+    if(line.size()!=2)
+       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'save <filename>'");
+
+    return CommandExecuterPtr(new SaveCommandExecuter(line.at(1)));
+}
+
+SaveCommandExecuter::SaveCommandExecuter(const std::string &filename_):
+    filename(filename_)
+{}
+
+std::string SaveCommandExecuter::execute(State &state, Evaluator &evaluator){
+    evaluator.save_memory_to_file(filename);
+    return "";
+}
+
+
+//LOAD:
+std::string LoadCommandParser::command_name(){ 
+    return "load";
+}
+
+CommandExecuterPtr LoadCommandParser::parse(const CommandLine &line){
+    if(line.size()!=2)
+       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'load <filename>'");
+
+    return CommandExecuterPtr(new LoadCommandExecuter(line.at(1)));
+}
+
+LoadCommandExecuter::LoadCommandExecuter(const std::string &filename_):
+    filename(filename_)
+{}
+
+std::string LoadCommandExecuter::execute(State &state, Evaluator &evaluator){
+    evaluator.load_memory_from_file(filename);
+    return "";
+}
 

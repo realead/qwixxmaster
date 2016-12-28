@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include "Command.h"
 #include "State.h"
@@ -99,6 +100,27 @@ class AutoplayCommandExecuter: public CommandExecuter{
      size_t seed;
 public: 
      AutoplayCommandExecuter(size_t seed);
+     virtual std::string execute(State &state, Evaluator &evaluator);
+};
+
+
+
+CREATE_COMMAND_PARSER_DECLARATION(Save);
+
+class SaveCommandExecuter: public CommandExecuter{
+     std::string filename;
+public: 
+     SaveCommandExecuter(const std::string &filename);
+     virtual std::string execute(State &state, Evaluator &evaluator);
+};
+
+
+CREATE_COMMAND_PARSER_DECLARATION(Load);
+
+class LoadCommandExecuter: public CommandExecuter{
+     std::string filename;
+public: 
+     LoadCommandExecuter(const std::string &filename);
      virtual std::string execute(State &state, Evaluator &evaluator);
 };
 
