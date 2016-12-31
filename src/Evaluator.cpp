@@ -2,9 +2,11 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 
 #include "State.h"
 #include "RandomDice.h"
+#include "BruteForceRollGenerator.h"
 #include "StringUtils.h"
 #include "MemoryManager.h"
 
@@ -69,9 +71,13 @@ float Evaluator::evaluate_state(const State &state){
         }
         else{
            double value=0;
-           GlobalRollGenerator gen(sampling_number);
-           while(gen.has_next()){
-                RollPair roll_pair=gen.get_next();
+           std::unique_ptr<RollGenerator> gen;
+           if(sampling_number==0)
+              gen.reset(new  BruteForceRollGenerator());
+           else
+              gen.reset(new GlobalRollGenerator(sampling_number));
+           while(gen->has_next()){
+                RollPair roll_pair=gen->get_next();
                 value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll);
            }        
            mem.at(id)=static_cast<float>(value);
