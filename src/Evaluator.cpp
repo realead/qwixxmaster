@@ -68,11 +68,13 @@ float Evaluator::evaluate_state(const State &state){
            mem.at(id)=state.score();
         }
         else{
-           float value=0;
-           for(size_t i=0;i<sampling_number;i++)
-              value+=evaluate_roll(state, RandomDice::random_roll());
-                    
-           mem.at(id)=value/sampling_number;
+           double value=0;
+           GlobalRollGenerator gen(sampling_number);
+           while(gen.has_next()){
+                RollPair roll_pair=gen.get_next();
+                value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll);
+           }        
+           mem.at(id)=static_cast<float>(value);
         }
      }
      

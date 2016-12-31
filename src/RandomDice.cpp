@@ -28,3 +28,19 @@ DiceRoll RandomDice::random_roll(){
  }
  
  
+ 
+GlobalRollGenerator::GlobalRollGenerator(size_t sampling_number):
+   left(sampling_number), prob(1.0/sampling_number){};
+
+bool GlobalRollGenerator::has_next() const{
+    return left>0;
+}
+
+RollPair GlobalRollGenerator::get_next(){
+    left--;
+    return RollPair(prob, RandomDice::random_roll());
+}
+
+
+
+

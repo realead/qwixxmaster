@@ -1,11 +1,10 @@
 #pragma once
 
-#include <array>
+
 #include <random>
 
 
-typedef std::array<int, 6> DiceRoll;
-typedef std::array<int, 2> ShortDiceRoll;
+#include "RollGenerator.h"
 
 
 namespace RandomDice{
@@ -22,6 +21,16 @@ private:
 public:
   DiceRoller(size_t seed);
   DiceRoll roll();
+};
+
+
+class GlobalRollGenerator : public RollGenerator{
+    size_t left;
+    double prob;
+public:
+    GlobalRollGenerator(size_t sampling_number);
+    virtual bool has_next() const;
+    virtual RollPair get_next();
 };
 
 
