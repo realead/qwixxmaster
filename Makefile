@@ -34,6 +34,6 @@ run: create
 	bin/quixxmaster
 	
 testtime: create
-	/usr/bin/time bin/quixxmaster -s 10 < test/time_cases/small.in
-	/usr/bin/time bin/quixxmaster -s 80 < test/time_cases/medium.in
+	/usr/bin/time bin/quixxmaster -s 0 < test/time_cases/small.in
+	/usr/bin/time bin/quixxmaster -s 0 < test/time_cases/medium.in
 	/usr/bin/time bin/quixxmaster -s 10 < test/time_cases/long.in
