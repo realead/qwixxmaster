@@ -3,6 +3,7 @@
 CC=g++ 
 sources = $(wildcard src/*.cpp)
 objects = $(sources:.cpp=.o)
+EXEDIR = bin
 
 PG=
 
@@ -21,7 +22,8 @@ clean :
 	$(CC) -g $(PG) -std=c++11 -O2 -c $< -o $> $@
 
 create : $(objects)
-	$(CC) -g $(PG) $(objects) -o bin/quixxmaster
+	test -d $(EXEDIR) || mkdir $(EXEDIR)
+	$(CC) -g $(PG) $(objects) -o $(EXEDIR)/quixxmaster
 	
 	
 test: create
