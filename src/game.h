@@ -13,7 +13,7 @@ private:
     State state;  
     Evaluator evaluator;
 public:
-    game(size_t sampling_number);
+    game(size_t sampling_number, const std::string & mem_file);
     typedef std::vector<std::string> Command;
     bool execute_command(const Command &command, std::ostream &out);
 };

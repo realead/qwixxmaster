@@ -9,7 +9,13 @@
 
 
 
-game::game(size_t sampling_number_): evaluator(sampling_number_){}
+game::game(size_t sampling_number_, const std::string &mem_file): 
+      evaluator(sampling_number_)
+{
+    if(!mem_file.empty()){
+       evaluator.load_memory_from_file(mem_file);
+    }
+}
 
 bool game::execute_command(const std::vector<std::string> &command, std::ostream &out){
     
