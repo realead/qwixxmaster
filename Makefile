@@ -19,7 +19,7 @@ clean :
 	rm -f src/*.o
 
 %.o : %.cpp
-	$(CC) -g $(PG) -std=c++11 -O2 -c $< -o $> $@
+	$(CC) -g $(PG) -std=c++11 -O3 -c $< -o $> $@
 
 create : $(objects)
 	test -d $(EXEDIR) || mkdir $(EXEDIR)
