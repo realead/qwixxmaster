@@ -37,7 +37,7 @@ input_files=glob.glob(test_case_dir+"/*.in")
 
 wrong=0
 for in_data in input_files:
-    result=execute_process(["bin/quixxmaster"], in_data )
+    result=execute_process(["bin/qwixxmaster"], in_data )
     with open(in_data[0:-2]+'ans', 'r') as myfile:
         expected=myfile.read();
     if expected!=result.stdout:

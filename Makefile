@@ -23,7 +23,7 @@ clean :
 
 create : $(objects)
 	test -d $(EXEDIR) || mkdir $(EXEDIR)
-	$(CC) -g $(PG) $(objects) -o $(EXEDIR)/quixxmaster
+	$(CC) -g $(PG) $(objects) -o $(EXEDIR)/qwixxmaster
 	
 	
 test: create
@@ -33,9 +33,9 @@ long_test: test
 	python test/test_io.py test/long_runners
 
 run: create
-	bin/quixxmaster
+	bin/qwixxmaster
 	
 testtime: create
-	/usr/bin/time bin/quixxmaster -s 0 < test/time_cases/small.in
-	/usr/bin/time bin/quixxmaster -s 0 < test/time_cases/medium.in
-	/usr/bin/time bin/quixxmaster -s 10 < test/time_cases/long.in
+	/usr/bin/time bin/qwixxmaster -s 0 < test/time_cases/small.in
+	/usr/bin/time bin/qwixxmaster -s 0 < test/time_cases/medium.in
+	/usr/bin/time bin/qwixxmaster -s 10 < test/time_cases/long.in
