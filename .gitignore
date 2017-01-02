@@ -2,6 +2,7 @@
 bin
 *~
 out.txt
+*.qxm
 
 
 # Compiled Object files
