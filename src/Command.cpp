@@ -14,11 +14,12 @@ namespace{
     }
 }
 
-bool CommandDictionary::register_command(const std::string& command_name, CommandParser *command){
+bool CommandDictionary::register_command(CommandParser *command){
     if(command==NULL)
         THROW_QUIXX("Trying to register NULL as command - this is not allowed");
         
     CommandParserPtr c(command);
+    const std::string command_name=c->command_name(); 
     CommandMap &map=get_command_map();
     if(map.count(command_name)>0)   
         THROW_QUIXX("Trying to register command "<<command_name<<" twice");

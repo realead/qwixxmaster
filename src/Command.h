@@ -22,6 +22,7 @@ typedef std::unique_ptr<CommandExecuter> CommandExecuterPtr;
 class CommandParser{
 public:
     virtual CommandExecuterPtr parse(const CommandLine &line)=0;
+    virtual std::string command_name() const=0;
     virtual ~CommandParser(){};
 };
 
@@ -29,7 +30,7 @@ typedef std::unique_ptr<CommandParser> CommandParserPtr;
 
 //singleton!
 namespace CommandDictionary{
-    bool register_command(const std::string& command_name, CommandParser *command);
+    bool register_command(CommandParser *command);
     CommandExecuterPtr get_command_executer(const CommandLine &line);
 };
 

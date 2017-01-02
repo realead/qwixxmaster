@@ -8,7 +8,7 @@
 #include "QuixxException.h"
 
 #define REGISTER_COMMAND(Command)\
-    static bool registered_##Command=CommandDictionary::register_command(Command##CommandParser::command_name(), new Command##CommandParser());
+    static bool registered_##Command=CommandDictionary::register_command(new Command##CommandParser());
 
 REGISTER_COMMAND(Score);
 REGISTER_COMMAND(Exit);
@@ -43,7 +43,7 @@ std::string ScoreCommandExecuter::execute(State &state, Evaluator &evaluator){
     return stringutils::int2str(state.score());
 }
 
-std::string ScoreCommandParser::command_name(){ 
+std::string ScoreCommandParser::command_name() const{ 
     return "score";
 }
 
@@ -63,7 +63,7 @@ bool ExitCommandExecuter::exit_program() const{
     return true;
 }
 
-std::string ExitCommandParser::command_name(){ 
+std::string ExitCommandParser::command_name() const{ 
     return "exit";
 }
 
@@ -88,7 +88,7 @@ std::string PrintCommandExecuter::execute(State &state, Evaluator &evaluator){
     return out.str();
 }
 
-std::string PrintCommandParser::command_name(){ 
+std::string PrintCommandParser::command_name() const{ 
     return "print";
 }
 
@@ -105,7 +105,7 @@ std::string TakeMissCommandExecuter::execute(State &state, Evaluator &evaluator)
 }
 
 
-std::string TakeCommandParser::command_name(){ 
+std::string TakeCommandParser::command_name() const{ 
     return "take";
 }
 
@@ -152,7 +152,7 @@ std::string TakeColorCommandExecuter::execute(State &state, Evaluator &evaluator
 }
 
 
-std::string SetCommandParser::command_name(){ 
+std::string SetCommandParser::command_name() const{ 
     return "set";
 }
 
@@ -203,7 +203,7 @@ std::string SetCommandExecuter::execute(State &state, Evaluator &evaluator){
 
 
 //
-std::string PossibleCommandParser::command_name(){ 
+std::string PossibleCommandParser::command_name() const{ 
     return "possible";
 }
 
@@ -237,7 +237,7 @@ std::string PossibleCommandExecuter::execute(State &state, Evaluator &evaluator)
 
 
 ///////Ended
-std::string EndedCommandParser::command_name(){ 
+std::string EndedCommandParser::command_name() const{ 
     return "ended";
 }
 
@@ -253,7 +253,7 @@ std::string EndedCommandExecuter::execute(State &state, Evaluator &evaluator){
 }
 
 ///////Restart
-std::string RestartCommandParser::command_name(){ 
+std::string RestartCommandParser::command_name() const{ 
     return "restart";
 }
 
@@ -276,7 +276,7 @@ std::string EvaluateCommandExecuter::execute(State &state, Evaluator &evaluator)
 }
 
 
-std::string EvaluateCommandParser::command_name(){ 
+std::string EvaluateCommandParser::command_name() const{ 
     return "evaluate";
 }
 
@@ -311,7 +311,7 @@ std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator
 template class RollCommandExecuter<6>;
 
 
-std::string RollCommandParser::command_name(){ 
+std::string RollCommandParser::command_name() const{ 
     return "roll";
 }
 
@@ -388,7 +388,7 @@ std::string AutoplayCommandExecuter::execute(State &state, Evaluator &evaluator)
     return ss.str();
 }
 
-std::string AutoplayCommandParser::command_name(){ 
+std::string AutoplayCommandParser::command_name() const{ 
     return "autoplay";
 }
 
@@ -410,7 +410,7 @@ AutoplayCommandExecuter::AutoplayCommandExecuter(size_t seed_):
 
 //SAVE:
 
-std::string SaveCommandParser::command_name(){ 
+std::string SaveCommandParser::command_name() const{ 
     return "save";
 }
 
@@ -432,7 +432,7 @@ std::string SaveCommandExecuter::execute(State &state, Evaluator &evaluator){
 
 
 //LOAD:
-std::string LoadCommandParser::command_name(){ 
+std::string LoadCommandParser::command_name() const{ 
     return "load";
 }
 

@@ -11,7 +11,7 @@
     class Name##CommandParser: public CommandParser{\
     public:\
         virtual CommandExecuterPtr parse(const CommandLine &line);\
-        static std::string command_name();\
+        virtual std::string command_name() const; \
     };
     
 #define CREATE_COMMAND_EXECUTER_DECLARATION(Name)\
