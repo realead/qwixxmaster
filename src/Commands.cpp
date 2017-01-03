@@ -49,7 +49,7 @@ std::string ScoreCommandParser::command_name() const{
     return "score";
 }
 
-CommandExecuterPtr ScoreCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr ScoreCommandParser::parse_inner(const CommandLine &line){
     check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new ScoreCommandExecuter());
 }
@@ -69,7 +69,7 @@ std::string ExitCommandParser::command_name() const{
     return "exit";
 }
 
-CommandExecuterPtr ExitCommandParser::parse(const CommandLine &line){   
+CommandExecuterPtr ExitCommandParser::parse_inner(const CommandLine &line){   
     check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new ExitCommandExecuter());
 }
@@ -94,7 +94,7 @@ std::string PrintCommandParser::command_name() const{
     return "print";
 }
 
-CommandExecuterPtr PrintCommandParser::parse(const CommandLine &line){   
+CommandExecuterPtr PrintCommandParser::parse_inner(const CommandLine &line){   
     check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new PrintCommandExecuter());
 }
@@ -119,7 +119,7 @@ namespace{
 }
 
 
-CommandExecuterPtr TakeCommandParser::parse(const CommandLine &line){   
+CommandExecuterPtr TakeCommandParser::parse_inner(const CommandLine &line){   
     if(line.size()==2){
         if(line.at(1)!="miss"){
             wrong_take_syntax(line);
@@ -158,7 +158,7 @@ std::string SetCommandParser::command_name() const{
     return "set";
 }
 
-CommandExecuterPtr SetCommandParser::parse(const CommandLine &line){ 
+CommandExecuterPtr SetCommandParser::parse_inner(const CommandLine &line){ 
     //format of set: <taken_red> <last_red> <taken_yellow> <last_yellow> <taken_green> <last_green> <taken_blue> <last_blue> <missed>
     if(line.size()!=10)
         THROW_QUIXX("invalid syntax: '"<<stringutils::join(line)
@@ -209,7 +209,7 @@ std::string PossibleCommandParser::command_name() const{
     return "possible";
 }
 
-CommandExecuterPtr PossibleCommandParser::parse(const CommandLine &line){   
+CommandExecuterPtr PossibleCommandParser::parse_inner(const CommandLine &line){   
     //normal take
     if(line.size()!=3){
        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'take <color> <number>'");
@@ -243,7 +243,7 @@ std::string EndedCommandParser::command_name() const{
     return "ended";
 }
 
-CommandExecuterPtr EndedCommandParser::parse(const CommandLine &line){   
+CommandExecuterPtr EndedCommandParser::parse_inner(const CommandLine &line){   
     check_command_without_parameters(line, command_name());  
     return CommandExecuterPtr(new EndedCommandExecuter());
 }
@@ -259,7 +259,7 @@ std::string RestartCommandParser::command_name() const{
     return "restart";
 }
 
-CommandExecuterPtr RestartCommandParser::parse(const CommandLine &line){   
+CommandExecuterPtr RestartCommandParser::parse_inner(const CommandLine &line){   
     check_command_without_parameters(line, command_name());  
     return CommandExecuterPtr(new RestartCommandExecuter());
 }
@@ -282,7 +282,7 @@ std::string EvaluateCommandParser::command_name() const{
     return "evaluate";
 }
 
-CommandExecuterPtr EvaluateCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr EvaluateCommandParser::parse_inner(const CommandLine &line){
     check_command_without_parameters(line, command_name());
     return CommandExecuterPtr(new EvaluateCommandExecuter());
 }
@@ -334,7 +334,7 @@ namespace{
 }
 
 
-CommandExecuterPtr RollCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr RollCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=7 && line.size()!=3)
         THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is either 'roll <white_dice1> <white_dice2>' or 'roll <red_dice> <yellow_dice> <green_dice> <blue_dice> <white_dice1> <white_dice2>'");
      
@@ -394,7 +394,7 @@ std::string AutoplayCommandParser::command_name() const{
     return "autoplay";
 }
 
-CommandExecuterPtr AutoplayCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr AutoplayCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2)
        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'autoplay <seed>'");
     int seed;   
@@ -416,7 +416,7 @@ std::string SaveCommandParser::command_name() const{
     return "save";
 }
 
-CommandExecuterPtr SaveCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr SaveCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2)
        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'save <filename>'");
 
@@ -438,7 +438,7 @@ std::string LoadCommandParser::command_name() const{
     return "load";
 }
 
-CommandExecuterPtr LoadCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr LoadCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2)
        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'load <filename>'");
 
@@ -460,7 +460,7 @@ std::string HelpCommandParser::command_name() const{
     return "help";
 }
 
-CommandExecuterPtr HelpCommandParser::parse(const CommandLine &line){
+CommandExecuterPtr HelpCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2 && line.size()!=1)
        THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'help' or 'help <command>'");
     if(line.size()==1)

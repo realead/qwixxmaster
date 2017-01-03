@@ -48,3 +48,14 @@ CommandParser &CommandDictionary::get_command_parser(const std::string &command_
         THROW_QUIXX("unknown command: "<< command_name);
     return *(it->second);
 }
+
+CommandExecuterPtr CommandParser::parse(const CommandLine &line){
+    //paranoia:
+    if(line.empty() || line.front()!=command_name())
+       THROW_QUIXX("this is not the command: "<< command_name());
+    
+    //TODO: check the number of arguments
+    
+    return parse_inner(line);
+}
+

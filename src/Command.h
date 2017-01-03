@@ -20,8 +20,9 @@ typedef std::unique_ptr<CommandExecuter> CommandExecuterPtr;
 
 
 class CommandParser{
+    virtual CommandExecuterPtr parse_inner(const CommandLine &line)=0;
 public:
-    virtual CommandExecuterPtr parse(const CommandLine &line)=0;
+    CommandExecuterPtr parse(const CommandLine &line);
     virtual std::string command_name() const=0;
     virtual std::string usage() const {return std::string();};
     virtual std::string description() const {return std::string();};

@@ -9,8 +9,9 @@
 
 #define CREATE_COMMAND_PARSER_DECLARATION(Name)\
     class Name##CommandParser: public CommandParser{\
+    private:\
+        virtual CommandExecuterPtr parse_inner(const CommandLine &line);\
     public:\
-        virtual CommandExecuterPtr parse(const CommandLine &line);\
         virtual std::string command_name() const; \
     };
     
