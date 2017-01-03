@@ -29,10 +29,22 @@ bool CommandDictionary::register_command(CommandParser *command){
 
 CommandExecuterPtr CommandDictionary::get_command_executer(const CommandLine &line){  
     const std::string &command_name=line.at(0); 
-    CommandMap::const_iterator it=get_command_map().find(command_name);
-    if(it==get_command_map().end())
-        THROW_QUIXX("unknown command: "<< command_name);
-    return it->second->parse(line);
+    return CommandDictionary::get_command_parser(command_name).parse(line);
 }
 
 
+std::vector<std::string> CommandDictionary::get_registered_command_names(){
+   std::vector<std::string> res;
+   CommandMap::const_iterator it=get_command_map().begin();
+   CommandMap::const_iterator end=get_command_map().end();
+   for(;it!=end;++it)
+     res.push_back(it->first);
+   return res;
+}
+
+CommandParser &CommandDictionary::get_command_parser(const std::string &command_name){
+   CommandMap::const_iterator it=get_command_map().find(command_name);
+    if(it==get_command_map().end())
+        THROW_QUIXX("unknown command: "<< command_name);
+    return *(it->second);
+}

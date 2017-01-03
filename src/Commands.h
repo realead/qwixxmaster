@@ -124,3 +124,15 @@ public:
      virtual std::string execute(State &state, Evaluator &evaluator);
 };
 
+
+//Help:
+
+CREATE_COMMAND_DECLARATION(Help);
+
+class CommandDescriptionCommandExecuter: public CommandExecuter{
+     std::string command;
+public: 
+     CommandDescriptionCommandExecuter(const std::string &command);
+     virtual std::string execute(State &state, Evaluator &evaluator);
+};
+

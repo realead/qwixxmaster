@@ -1,0 +1,18 @@
+Welcome to quixxmaster!
+>>>all known commands:
+	autoplay
+	ended
+	evaluate
+	exit
+	help
+	load
+	possible
+	print
+	restart
+	roll
+	save
+	score
+	set
+	take
+type 'help <command name>' to get more information about a command
+>>>exiting...

@@ -23,6 +23,8 @@ class CommandParser{
 public:
     virtual CommandExecuterPtr parse(const CommandLine &line)=0;
     virtual std::string command_name() const=0;
+    virtual std::string usage() const {return std::string();};
+    virtual std::string description() const {return std::string();};
     virtual ~CommandParser(){};
 };
 
@@ -32,6 +34,8 @@ typedef std::unique_ptr<CommandParser> CommandParserPtr;
 namespace CommandDictionary{
     bool register_command(CommandParser *command);
     CommandExecuterPtr get_command_executer(const CommandLine &line);
+    std::vector<std::string> get_registered_command_names();
+    CommandParser &get_command_parser(const std::string &command_name);
 };
 
 

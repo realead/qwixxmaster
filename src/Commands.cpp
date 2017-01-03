@@ -28,6 +28,8 @@ REGISTER_COMMAND(Autoplay);
 REGISTER_COMMAND(Save);
 REGISTER_COMMAND(Load);
 
+REGISTER_COMMAND(Help);
+
 
 namespace{
   void check_command_without_parameters(const CommandLine &line, const std::string &command_name){
@@ -450,5 +452,46 @@ LoadCommandExecuter::LoadCommandExecuter(const std::string &filename_):
 std::string LoadCommandExecuter::execute(State &state, Evaluator &evaluator){
     evaluator.load_memory_from_file(filename);
     return "";
+}
+
+
+//Help:
+std::string HelpCommandParser::command_name() const{ 
+    return "help";
+}
+
+CommandExecuterPtr HelpCommandParser::parse(const CommandLine &line){
+    if(line.size()!=2 && line.size()!=1)
+       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'help' or 'help <command>'");
+    if(line.size()==1)
+       return CommandExecuterPtr(new HelpCommandExecuter());
+    return CommandExecuterPtr(new CommandDescriptionCommandExecuter(line.at(1)));
+}
+
+
+std::string HelpCommandExecuter::execute(State &state, Evaluator &evaluator){
+    std::vector<std::string> command_names=CommandDictionary::get_registered_command_names();
+    std::stringstream ss;
+    ss<<"all known commands:"<<std::endl;
+    for(const std::string c_name : command_names){
+       ss<<"\t"<<c_name<<std::endl;
+    }
+    ss<<"type 'help <command name>' to get more information about a command";
+    return ss.str();
+}
+
+
+CommandDescriptionCommandExecuter::CommandDescriptionCommandExecuter(const std::string &command_):
+  command(command_)
+{}
+
+
+std::string CommandDescriptionCommandExecuter::execute(State &state, Evaluator &evaluator){
+    const CommandParser &cp=CommandDictionary::get_command_parser(command);
+    std::stringstream ss;
+    ss<<command<<":"<<std::endl;
+    ss<<"usage:\t"<<cp.usage()<<std::endl;
+    ss<<"description:\t"<<cp.description();
+    return ss.str();
 }
 
