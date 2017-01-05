@@ -39,3 +39,8 @@ testtime: create
 	/usr/bin/time bin/qwixxmaster -s 0 < test/time_cases/small.in
 	/usr/bin/time bin/qwixxmaster -s 0 < test/time_cases/medium.in
 	/usr/bin/time bin/qwixxmaster -s 10 < test/time_cases/long.in
+	
+	
+create_memory: create
+	bin/qwixxmaster -s 0 < mems/create_mem.in
+
