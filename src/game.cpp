@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "StringUtils.h"
-#include "QuixxException.h"
+#include "QwixxException.h"
 
 #include "Command.h"
 
@@ -31,7 +31,7 @@ bool game::execute_command(const std::vector<std::string> &command, std::ostream
             out<<std::endl;
         return !executer->exit_program();
     }       
-    catch (QuixxException &ex){
+    catch (QwixxException &ex){
       out << ex.what() << std::endl;
     }
     

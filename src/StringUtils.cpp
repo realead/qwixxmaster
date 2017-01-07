@@ -3,7 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "QuixxException.h"
+#include "QwixxException.h"
 
 std::string stringutils::join(const std::vector<std::string> &strs, const std::string &delimeter){
     std::stringstream res;

@@ -3,7 +3,7 @@
 #include <fstream>
 
 
-#include "QuixxException.h"
+#include "QwixxException.h"
 
 namespace{
    const size_t MAGIC_NUMBER=422413;

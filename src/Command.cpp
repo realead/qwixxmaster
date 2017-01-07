@@ -3,7 +3,7 @@
 #include <map>
 #include <algorithm>
 
-#include "QuixxException.h"
+#include "QwixxException.h"
 #include "StringUtils.h"
 
 

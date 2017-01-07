@@ -5,7 +5,7 @@
 
 #include "StringUtils.h"
 #include "State.h"
-#include "QuixxException.h"
+#include "QwixxException.h"
 
 #define REGISTER_COMMAND(Command)\
     static bool registered_##Command=CommandDictionary::register_command(new Command##CommandParser());
