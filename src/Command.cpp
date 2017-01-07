@@ -1,8 +1,10 @@
 #include "Command.h"
 
 #include <map>
+#include <algorithm>
 
 #include "QuixxException.h"
+#include "StringUtils.h"
 
 
 namespace{
@@ -54,8 +56,15 @@ CommandExecuterPtr CommandParser::parse(const CommandLine &line){
     if(line.empty() || line.front()!=command_name())
        THROW_QUIXX("this is not the command: "<< command_name());
     
-    //TODO: check the number of arguments
+    std::vector<size_t> arg_cnts=possible_argument_cnt();
+    if(std::count(arg_cnts.begin(), arg_cnts.end(), line.size()-1)==0){
+       wrong_syntax(line);
+    }
     
     return parse_inner(line);
 }
+
+ void CommandParser::wrong_syntax(const CommandLine &line) const{
+    THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax for the '"<< command_name() << "' command is "<< usage()<<".");
+ }
 

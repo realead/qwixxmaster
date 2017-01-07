@@ -21,6 +21,9 @@ typedef std::unique_ptr<CommandExecuter> CommandExecuterPtr;
 
 class CommandParser{
     virtual CommandExecuterPtr parse_inner(const CommandLine &line)=0;
+    virtual std::vector<size_t> possible_argument_cnt() const = 0;
+protected:
+    void wrong_syntax(const CommandLine &line) const;
 public:
     CommandExecuterPtr parse(const CommandLine &line);
     virtual std::string command_name() const=0;

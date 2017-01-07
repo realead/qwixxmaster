@@ -1,3 +1,3 @@
 Welcome to quixxmaster!
->>>cannot parse 'exit fadsf'. The right syntax for the exit command is 'exit'.
+>>>unknown syntax: 'exit fadsf'. Known syntax for the 'exit' command is 'exit'.
 >>>exiting...
