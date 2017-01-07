@@ -27,7 +27,7 @@ protected:
 public:
     CommandExecuterPtr parse(const CommandLine &line);
     virtual std::string command_name() const=0;
-    virtual std::string usage() const {return std::string();};
+    virtual std::string usage() const=0;
     virtual std::string description() const {return std::string();};
     virtual ~CommandParser(){};
 };
