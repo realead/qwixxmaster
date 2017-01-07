@@ -14,6 +14,7 @@
         virtual std::vector<size_t> possible_argument_cnt() const;\
     public:\
         virtual std::string usage() const; \
+        virtual std::string description() const; \
         virtual std::string command_name() const; \
     };
     

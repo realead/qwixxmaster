@@ -39,9 +39,12 @@ std::string ScoreCommandParser::command_name() const{
     return "score";
 }
 
-
 std::string ScoreCommandParser::usage() const{
    return "'score'";
+}
+
+std::string ScoreCommandParser::description() const{
+    return "prints the score of the current state";
 }
 
 std::vector<size_t> ScoreCommandParser::possible_argument_cnt() const{ 
@@ -65,6 +68,10 @@ std::string ExitCommandParser::command_name() const{
 
 std::string ExitCommandParser::usage() const{
    return "'exit'";
+}
+
+std::string ExitCommandParser::description() const{
+    return "ends the program, the same as Ctrl+D";
 }
 
 std::vector<size_t> ExitCommandParser::possible_argument_cnt() const{ 
@@ -104,6 +111,10 @@ std::string PrintCommandParser::usage() const{
    return "'print'";
 }
 
+std::string PrintCommandParser::description() const{
+    return "prints the current state";
+}
+
 
 std::vector<size_t> PrintCommandParser::possible_argument_cnt() const{ 
     return {0};
@@ -126,6 +137,10 @@ std::string TakeCommandParser::command_name() const{
 
 std::string TakeCommandParser::usage() const{
    return "either 'take miss' or 'take <color> <number>'";
+}
+
+std::string TakeCommandParser::description() const{
+    return "takes the given combination of color/number or a miss";
 }
 
 std::vector<size_t> TakeCommandParser::possible_argument_cnt() const{ 
@@ -175,6 +190,10 @@ std::string SetCommandParser::usage() const{
    return "'set <taken_red> <last_red>"
           " <taken_yellow> <last_yellow> <taken_green> <last_green>"
           " <taken_blue> <last_blue> <missed>'";
+}
+
+std::string SetCommandParser::description() const{
+    return "sets the current state to a given state";
 }
 
 std::vector<size_t> SetCommandParser::possible_argument_cnt() const{ 
@@ -231,6 +250,9 @@ std::string PossibleCommandParser::usage() const{
    return "'possible <color> <number>'";
 }
 
+std::string PossibleCommandParser::description() const{
+    return "prints 'Yes' if the taking of a color/number combination is possible; prints 'No' otherwise";
+}
 
 std::vector<size_t> PossibleCommandParser::possible_argument_cnt() const{ 
     return {2};
@@ -272,6 +294,9 @@ std::string EndedCommandParser::usage() const{
    return "'ended'";
 }
 
+std::string EndedCommandParser::description() const{
+    return "prints 'Yes' if the current state means the end of the game; prints 'No' otherwise";
+}
 
 std::vector<size_t> EndedCommandParser::possible_argument_cnt() const{ 
     return {0};
@@ -299,6 +324,9 @@ std::string RestartCommandParser::usage() const{
    return "'restart'";
 }
 
+std::string RestartCommandParser::description() const{
+    return "restarts the game - the current state is the initial state";
+}
 
 std::vector<size_t> RestartCommandParser::possible_argument_cnt() const{ 
     return {0};
@@ -332,7 +360,9 @@ std::string EvaluateCommandParser::usage() const{
    return "'evaluate'";
 }
 
-
+std::string EvaluateCommandParser::description() const{
+    return "evaluate the states and prints expected score for a perfect strategy";
+}
 std::vector<size_t> EvaluateCommandParser::possible_argument_cnt() const{ 
     return {0};
 }
@@ -379,6 +409,9 @@ std::string RollCommandParser::usage() const{
           "'roll <red_dice> <yellow_dice> <green_dice> <blue_dice> <white_dice1> <white_dice2>'";
 }
 
+std::string RollCommandParser::description() const{
+    return "evaluates a dice roll (of 6 or 2 dices) and prints the expected scores for all possible decisions";
+}
 
 std::vector<size_t> RollCommandParser::possible_argument_cnt() const{ 
     return {2,6};
@@ -463,6 +496,10 @@ std::string AutoplayCommandParser::usage() const{
    return "'autoplay <seed>'";
 }
 
+std::string AutoplayCommandParser::description() const{
+    return "plays a game, dice rolls are randomly chosen and determined by given seed";
+}
+
 std::vector<size_t> AutoplayCommandParser::possible_argument_cnt() const{ 
     return {1};
 }
@@ -504,6 +541,9 @@ std::string SaveCommandParser::usage() const{
    return "'save <filename>'";
 }
 
+std::string SaveCommandParser::description() const{
+    return "saves the evaluations of the states to a given file";
+}
 
 std::vector<size_t> SaveCommandParser::possible_argument_cnt() const{ 
     return {1};
@@ -537,6 +577,9 @@ std::string LoadCommandParser::usage() const{
    return "'load <filename>'";
 }
 
+std::string LoadCommandParser::description() const{
+    return "loads the evaluations of the states from a given file";
+}
 
 std::vector<size_t> LoadCommandParser::possible_argument_cnt() const{ 
     return {1};
@@ -569,7 +612,9 @@ std::string HelpCommandParser::usage() const{
    return "either 'help' or 'help <command>'";
 }
 
-
+std::string HelpCommandParser::description() const{
+    return "prints a list of all commands or, given a command name, description of a command";
+}
 
 std::vector<size_t> HelpCommandParser::possible_argument_cnt() const{ 
     return {0,1};
