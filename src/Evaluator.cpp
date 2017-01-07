@@ -193,11 +193,15 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Sh
 }
 
 
-void Evaluator::save_memory_to_file(const std::string &filename) const{
+std::pair<size_t, size_t> Evaluator::save_memory_to_file(const std::string &filename) const{
    MemoryManager::save_memory(filename, mem);
+   size_t not_set=std::count(mem.begin(), mem.end(), STATE_NOT_EVALUATED);
+   return std::make_pair(mem.size(), not_set);
 }
 
-void Evaluator::load_memory_from_file(const std::string &filename){
+std::pair<size_t, size_t> Evaluator::load_memory_from_file(const std::string &filename){
   MemoryManager::load_memory(filename, mem);
+  size_t not_set=std::count(mem.begin(), mem.end(), STATE_NOT_EVALUATED);
+  return std::make_pair(mem.size(), not_set);
 }
 

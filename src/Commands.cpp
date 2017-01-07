@@ -486,6 +486,15 @@ AutoplayCommandExecuter::AutoplayCommandExecuter(size_t seed_):
 
 //SAVE:
 
+namespace{
+    std::string report2str(const std::pair<size_t, size_t> &report){         
+        std::stringstream ss;
+        double percent=report.second*100.0/report.first;
+        ss<<report.second<<" out of "<<report.first<<" ("<<percent<<") not set";
+        return ss.str();
+    }
+}
+
 std::string SaveCommandParser::command_name() const{ 
     return "save";
 }
@@ -513,8 +522,8 @@ SaveCommandExecuter::SaveCommandExecuter(const std::string &filename_):
 {}
 
 std::string SaveCommandExecuter::execute(State &state, Evaluator &evaluator){
-    evaluator.save_memory_to_file(filename);
-    return "";
+    auto report=evaluator.save_memory_to_file(filename);
+    return report2str(report);
 }
 
 
@@ -545,8 +554,8 @@ LoadCommandExecuter::LoadCommandExecuter(const std::string &filename_):
 {}
 
 std::string LoadCommandExecuter::execute(State &state, Evaluator &evaluator){
-    evaluator.load_memory_from_file(filename);
-    return "";
+    std::pair<size_t, size_t> report=evaluator.load_memory_from_file(filename);
+    return report2str(report);
 }
 
 

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <utility>
 
 #include "RandomDice.h"
 
@@ -24,8 +25,9 @@ public:
     MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll);
     
     
-    void save_memory_to_file(const std::string &filename) const;
-    void load_memory_from_file(const std::string &filename);
+    //returns: size of the memory, number of unset states
+    std::pair<size_t, size_t> save_memory_to_file(const std::string &filename) const;
+    std::pair<size_t, size_t> load_memory_from_file(const std::string &filename);
 private:  
     void evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix); 
 };
