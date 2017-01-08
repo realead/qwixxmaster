@@ -97,8 +97,9 @@ CREATE_COMMAND_PARSER_DECLARATION(Roll);
 template <size_t  len>
 class RollCommandExecuter: public CommandExecuter{
      std::array<int, len> roll;
+     size_t current_player;
 public: 
-     RollCommandExecuter(const std::array<int, len> &roll);
+     RollCommandExecuter(const std::array<int, len> &roll, size_t current_player=0);
      virtual std::string execute(State &state, Evaluator &evaluator);
 };
 

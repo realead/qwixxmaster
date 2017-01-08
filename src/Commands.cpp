@@ -386,15 +386,19 @@ CommandExecuterPtr EvaluateCommandParser::parse_inner(const CommandLine &line){
 
 //
 template <size_t  len>
-RollCommandExecuter<len>::RollCommandExecuter(const std::array<int, len> &roll_):
-   roll(roll_)
+RollCommandExecuter<len>::RollCommandExecuter(const std::array<int, len> &roll_, size_t current_player_):
+   roll(roll_), current_player(current_player_)
 {}
 
 
 template <size_t  len>
 std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator){
+
+    if(evaluator.get_number_of_players()<=current_player)
+          THROW_QWIXX("there are only "<< evaluator.get_number_of_players() <<" players, and no player with id "<<current_player); 
+          
     std::stringstream ss;
-    Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll, 0);
+    Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll, current_player);
     size_t cnt=0;
     for(const Evaluator::MoveInfo &info:infos){
            if(cnt!=0)
@@ -415,7 +419,7 @@ std::string RollCommandParser::command_name() const{
 
 
 std::string RollCommandParser::usage() const{
-   return "either 'roll <white_dice1> <white_dice2>'"
+   return "either 'roll <white_dice1> <white_dice2> [current_player=1]'"
           " or "
           "'roll <red_dice> <yellow_dice> <green_dice> <blue_dice> <white_dice1> <white_dice2>'";
 }
@@ -425,7 +429,7 @@ std::string RollCommandParser::description() const{
 }
 
 std::vector<size_t> RollCommandParser::possible_argument_cnt() const{ 
-    return {2,6};
+    return {2, 3, 6};
 }
 
 
@@ -450,8 +454,12 @@ CommandExecuterPtr RollCommandParser::parse_inner(const CommandLine &line){
     if(line.size()==7){
         return CommandExecuterPtr(new RollCommandExecuter<6>(parse_dices<6>(line)));
     }
-    //line.size()==3
-    return CommandExecuterPtr(new RollCommandExecuter<2>(parse_dices<2>(line)));
+    int current_player=1;
+    if(line.size()==4){       
+        if (!stringutils::str2int(line.at(3), current_player))
+           THROW_QWIXX("could not convert '"<<line.at(3)<<"' to a number");
+    }
+    return CommandExecuterPtr(new RollCommandExecuter<2>(parse_dices<2>(line), current_player));
 }
 
 
