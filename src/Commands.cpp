@@ -346,7 +346,7 @@ std::string RestartCommandExecuter::execute(State &state, Evaluator &evaluator){
 //Evaluate
 std::string EvaluateCommandExecuter::execute(State &state, Evaluator &evaluator){
     std::stringstream ss;
-    ss<<"Expected score: "<<evaluator.evaluate_state(state);
+    ss<<"Expected score: "<<evaluator.evaluate_state(state, 0);
     return ss.str();
 }
 
@@ -383,7 +383,7 @@ RollCommandExecuter<len>::RollCommandExecuter(const std::array<int, len> &roll_)
 template <size_t  len>
 std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator){
     std::stringstream ss;
-    Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll);
+    Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll, 0);
     size_t cnt=0;
     for(const Evaluator::MoveInfo &info:infos){
            if(cnt!=0)
@@ -476,8 +476,8 @@ std::string AutoplayCommandExecuter::execute(State &state, Evaluator &evaluator)
     DiceRoller roller(seed);
     size_t move_number=0;
     while(!state.ended()){
-      ss<<"move "<<move_number<<" expected score: "<<evaluator.evaluate_state(state)<<std::endl;
-      std::vector<CommandExecuterPtr> commands=translate_to_executers(evaluator.get_roll_evaluation(state, roller.roll()));
+      ss<<"move "<<move_number<<" expected score: "<<evaluator.evaluate_state(state, 0)<<std::endl;
+      std::vector<CommandExecuterPtr> commands=translate_to_executers(evaluator.get_roll_evaluation(state, roller.roll(), 0));
       for(const CommandExecuterPtr &command : commands){
         command->execute(state, evaluator);
       }

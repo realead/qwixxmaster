@@ -57,6 +57,10 @@ namespace {
   
 }
 
+size_t Evaluator::get_next_player(size_t current_player) const{
+    return (current_player+1)%player_number;
+}
+
 Evaluator::Evaluator(size_t sampling_number_, size_t player_number_): 
    sampling_number(sampling_number_), player_number(player_number_),
    mem(player_number*(calc_max_index()+1), STATE_NOT_EVALUATED)
@@ -78,7 +82,7 @@ float Evaluator::evaluate_state(const State &state, size_t current_player){
               gen.reset(new GlobalRollGenerator(sampling_number));
            while(gen->has_next()){
                 RollPair roll_pair=gen->get_next();
-                value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll);
+                value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll, current_player);
            }        
            mem.at(id)=static_cast<float>(value);
         }
@@ -89,6 +93,7 @@ float Evaluator::evaluate_state(const State &state, size_t current_player){
 }
 
 float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, size_t current_player){
+    size_t next_player=get_next_player(current_player);
     // no whites!
     float best=-1e6;
     State cur=state;
@@ -100,7 +105,7 @@ float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &rol
             unsigned char save_last=cur.last[j];
             unsigned char save_cnt=cur.cnt[j];
             if(cur.take(color, roll[color]+roll[dice])){
-                   best=std::max(best, evaluate_state(cur));
+                   best=std::max(best, evaluate_state(cur, next_player));
                    cur.last[j]=save_last;
                    cur.cnt[j]=save_cnt;
             }
@@ -110,27 +115,28 @@ float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &rol
 }
 
 float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player){
+   size_t next_player=get_next_player(current_player);
 
    //always an option: take miss
    State cur=state;
    cur.add_miss();
-   float best=evaluate_state(cur);
+   float best=evaluate_state(cur, next_player);
    
    //take whites:
    for (size_t i=0;i<COLOR_CNT;i++){
         Color color=static_cast<Color>(i);
         cur=state;
         if(cur.take(color, roll[4]+roll[5])){
-            best=std::max(best, evaluate_state(cur));
-            best=std::max(best, evaluate_without_whites(cur, roll));
+            best=std::max(best, evaluate_state(cur, next_player));
+            best=std::max(best, evaluate_without_whites(cur, roll, current_player));
         }
     }
      
-    return std::max(best, evaluate_without_whites(state, roll));
+    return std::max(best, evaluate_without_whites(state, roll, current_player));
 }
 
 float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll, size_t current_player){
-   
+   size_t next_player=get_next_player(current_player);
    float best=-1e-6;
    
    //take whites:
@@ -138,7 +144,7 @@ float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll, si
         Color color=static_cast<Color>(i);
         State cur=state;
         if(cur.take(color, roll.at(0)+roll.at(1))){
-            best=std::max(best, evaluate_state(cur));        
+            best=std::max(best, evaluate_state(cur, next_player));        
         }
     }
     
@@ -147,22 +153,23 @@ float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll, si
 
 
 void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix, size_t current_player){
+    size_t next_player=get_next_player(current_player);
     for(size_t dice=4;dice<=5;dice++)
         for(size_t j=0;j<COLOR_CNT;j++){
             Color color=static_cast<Color>(j);
             State cur=state;
             if(cur.take(color, roll[color]+roll[dice]))
-                       res.push_back(std::make_pair(evaluate_state(cur),prefix+ color2str(color)+" "+stringutils::int2str(roll[color]+roll[dice])));
+                       res.push_back(std::make_pair(evaluate_state(cur, next_player),prefix+ color2str(color)+" "+stringutils::int2str(roll[color]+roll[dice])));
         }
 }
 
 Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll, size_t current_player){
    MoveInfos res;
-   
+   size_t next_player=get_next_player(current_player);
    //always an option: take miss
    State cur=state;
    cur.add_miss();
-   res.push_back(std::make_pair(evaluate_state(cur), "miss"));
+   res.push_back(std::make_pair(evaluate_state(cur, next_player), "miss"));
    
    //take whites:
    for (size_t i=0;i<COLOR_CNT;i++){
@@ -170,15 +177,15 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
         cur=state;
         if(cur.take(color, roll.at(4)+roll.at(5))){
             std::string move=color2str(color)+" "+stringutils::int2str(roll.at(4)+roll.at(5));
-            res.push_back(std::make_pair(evaluate_state(cur), move));
+            res.push_back(std::make_pair(evaluate_state(cur, next_player), move));
             
             //additional color dice?
-            evaluate_without_whites(cur, roll, res, move+",");
+            evaluate_without_whites(cur, roll, res, move+",", current_player);
         }
     }
     
     // no whites!
-    evaluate_without_whites(state, roll, res, "");
+    evaluate_without_whites(state, roll, res, "", current_player);
     sort(res.begin(), res.end(), std::greater<MoveInfo>());
     return res;
 
@@ -188,9 +195,10 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
 
 Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player){
    MoveInfos res;
+   size_t next_player=get_next_player(current_player);
    
    //I'm allowed not to take anything:
-   res.push_back(std::make_pair(evaluate_state(state), "nothing"));
+   res.push_back(std::make_pair(evaluate_state(state, 0), "nothing"));
    
    //take whites:
    for (size_t i=0;i<COLOR_CNT;i++){
@@ -198,7 +206,7 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Sh
         State cur=state;
         if(cur.take(color, roll.at(0)+roll.at(1))){
             std::string move=color2str(color)+" "+stringutils::int2str(roll.at(0)+roll.at(1));
-            res.push_back(std::make_pair(evaluate_state(cur), move));
+            res.push_back(std::make_pair(evaluate_state(cur, next_player), move));
             
         }
     }

@@ -14,17 +14,18 @@ private:
     size_t player_number;
     std::vector<float> mem;
        
+    size_t get_next_player(size_t current_player) const;
 public:
     Evaluator(size_t sampling_number, size_t player_number=1);
-    float evaluate_state(const State &state, size_t current_player=0);
+    float evaluate_state(const State &state, size_t current_player);
     
-    float evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player=0);
-    float evaluate_roll(const State &state, const ShortDiceRoll &roll, size_t current_player=0);
+    float evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player);
+    float evaluate_roll(const State &state, const ShortDiceRoll &roll, size_t current_player);
     
     typedef std::pair<float, std::string> MoveInfo;
     typedef std::vector<MoveInfo> MoveInfos;
-    MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll, size_t current_player=0);
-    MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player=0);
+    MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll, size_t current_player);
+    MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player);
     
     
     //returns: size of the memory, number of unset states
@@ -32,8 +33,8 @@ public:
     std::pair<size_t, size_t> load_memory_from_file(const std::string &filename);
     
 private:  
-    float evaluate_without_whites(const State &state, const DiceRoll &roll, size_t current_player=0); 
-    void evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix, size_t current_player=0); 
+    float evaluate_without_whites(const State &state, const DiceRoll &roll, size_t current_player); 
+    void evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix, size_t current_player); 
 };
 
 
