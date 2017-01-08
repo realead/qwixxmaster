@@ -16,7 +16,7 @@ private:
        
     size_t get_next_player(size_t current_player) const;
 public:
-    Evaluator(size_t sampling_number, size_t player_number=1);
+    Evaluator(size_t sampling_number, size_t player_number);
     float evaluate_state(const State &state, size_t current_player);
     
     float evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player);

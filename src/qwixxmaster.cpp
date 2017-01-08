@@ -11,9 +11,13 @@
 
 struct Control{
    size_t sampling_number;
+   size_t number_of_players;
    std::string mem_file;
+   
    Control():
-     sampling_number(2){}
+     sampling_number(2),
+     number_of_players(1)
+   {}
 };
 
 Control parse_command_line(int argc, char *argv[]){
@@ -22,6 +26,11 @@ Control parse_command_line(int argc, char *argv[]){
    for(int i=1;i<argc;i+=2){
         if(argv[i]==std::string("-s")){
             res.sampling_number=stringutils::str2int(argv[i+1]);
+        }
+        if(argv[i]==std::string("-n")){
+            res.number_of_players=stringutils::str2int(argv[i+1]);
+            if(res.number_of_players==0)
+               res.number_of_players=1;
         }
         if(argv[i]==std::string("-m")){
            res.mem_file=argv[i+1];
@@ -32,7 +41,7 @@ Control parse_command_line(int argc, char *argv[]){
 
 int main(int argc, char *argv[]){
     Control control=parse_command_line(argc, argv);
-    game g(control.sampling_number, control.mem_file);
+    game g(control.sampling_number, control.mem_file, control.number_of_players);
     
     std::cout<<"Welcome to qwixxmaster!"<<std::endl;
     

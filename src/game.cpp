@@ -9,8 +9,8 @@
 
 
 
-game::game(size_t sampling_number_, const std::string &mem_file): 
-      evaluator(sampling_number_)
+game::game(size_t sampling_number_, const std::string &mem_file, size_t number_of_players): 
+      evaluator(sampling_number_, number_of_players)
 {
     if(!mem_file.empty()){
        evaluator.load_memory_from_file(mem_file);
