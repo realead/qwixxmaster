@@ -22,7 +22,7 @@ def execute_process(command, input_file, ok_code=[0]):
     output, err = df.communicate()
     code=df.returncode
     if code not in ok_code:
-        raise ProcessCallError("Process returned unexpected code {0}".format(code), code)
+        raise ProcessCallError("Process for input file {0} returned unexpected code {1}".format(input_file, code), code)
     return CallResult(output, err, code)
     
     
