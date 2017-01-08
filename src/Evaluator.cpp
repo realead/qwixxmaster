@@ -68,7 +68,7 @@ Evaluator::Evaluator(size_t sampling_number_, size_t player_number_):
 
 
 float Evaluator::evaluate_state(const State &state, size_t current_player){
-     size_t id=calc_id(state);
+     size_t id=calc_id(state)+current_player*(calc_max_index()+1);
      if(mem.at(id)==STATE_NOT_EVALUATED){
         if(state.ended()){
            mem.at(id)=state.score();
