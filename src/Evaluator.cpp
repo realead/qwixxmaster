@@ -129,6 +129,21 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
     return std::max(best, evaluate_without_whites(state, roll));
 }
 
+float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll){
+   
+   float best=-1e-6;
+   
+   //take whites:
+   for (size_t i=0;i<COLOR_CNT;i++){
+        Color color=static_cast<Color>(i);
+        State cur=state;
+        if(cur.take(color, roll.at(0)+roll.at(1))){
+            best=std::max(best, evaluate_state(cur));        
+        }
+    }
+    
+   return best;  
+}
 
 
 void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix){

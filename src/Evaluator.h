@@ -18,7 +18,9 @@ private:
 public:
     Evaluator(size_t sampling_number, size_t player_number=1);
     float evaluate_state(const State &state);
+    
     float evaluate_roll(const State &state, const DiceRoll &roll);
+    float evaluate_roll(const State &state, const ShortDiceRoll &roll);
     
     typedef std::pair<float, std::string> MoveInfo;
     typedef std::vector<MoveInfo> MoveInfos;
