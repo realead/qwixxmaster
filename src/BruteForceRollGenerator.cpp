@@ -36,3 +36,40 @@
  
  
  
+ 
+ 
+ //SHORT GENERATOR
+bool BruteForceShortRollGenerator::has_next() const{
+    return roll.at(1)<=6;
+ }
+ 
+BruteForceShortRollGenerator::BruteForceShortRollGenerator():
+     roll{1,1}
+{}
+     
+ 
+ namespace{
+   const double SHORT_SIMPLE_PROB=1.0/(36.0);
+   const double SHORT_DOUBLE_PROB=SHORT_SIMPLE_PROB*2.0;
+ }
+ 
+ 
+ 
+ ShortRollPair BruteForceShortRollGenerator::get_next(){
+   ShortRollPair result(roll[0]==roll[1]? SHORT_SIMPLE_PROB : SHORT_DOUBLE_PROB, roll);
+   
+   
+   //calc next:
+   if(roll[0]==roll[1]){
+     roll[0]=1;
+     roll[1]++;
+   }
+   else{
+     roll[0]++;
+   }
+     
+   return result;
+ 
+ }
+ 
+ 
