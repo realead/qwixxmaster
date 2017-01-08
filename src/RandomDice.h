@@ -11,6 +11,7 @@ namespace RandomDice{
 
     //returns 6 values which can be interpreted as red,yellow,green, blue, first white, second white
     DiceRoll random_roll();
+    ShortDiceRoll random_short_roll();
 }
 
 
@@ -24,6 +25,8 @@ public:
 };
 
 
+
+//rollers
 class GlobalRollGenerator : public RollGenerator{
     size_t left;
     double prob;
@@ -33,6 +36,15 @@ public:
     virtual RollPair get_next();
 };
 
+
+class GlobalShortRollGenerator : public ShortRollGenerator{
+    size_t left;
+    double prob;
+public:
+    GlobalShortRollGenerator(size_t sampling_number);
+    virtual bool has_next() const;
+    virtual ShortRollPair get_next();
+};
 
 
 
