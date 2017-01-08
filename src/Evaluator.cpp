@@ -150,7 +150,9 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll, size_t 
 
 float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll, size_t current_player){
    size_t next_player=get_next_player(current_player);
-   float best=-1e-6;
+  
+   //it is allowed not to take
+   float best=evaluate_state(state, next_player);
    
    //take whites:
    for (size_t i=0;i<COLOR_CNT;i++){
@@ -211,7 +213,7 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Sh
    size_t next_player=get_next_player(current_player);
    
    //I'm allowed not to take anything:
-   res.push_back(std::make_pair(evaluate_state(state, 0), "nothing"));
+   res.push_back(std::make_pair(evaluate_state(state, next_player), "nothing"));
    
    //take whites:
    for (size_t i=0;i<COLOR_CNT;i++){
