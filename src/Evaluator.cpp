@@ -63,7 +63,7 @@ Evaluator::Evaluator(size_t sampling_number_, size_t player_number_):
 {}
 
 
-float Evaluator::evaluate_state(const State &state){
+float Evaluator::evaluate_state(const State &state, size_t current_player){
      size_t id=calc_id(state);
      if(mem.at(id)==STATE_NOT_EVALUATED){
         if(state.ended()){
@@ -88,7 +88,7 @@ float Evaluator::evaluate_state(const State &state){
 
 }
 
-float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll){
+float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, size_t current_player){
     // no whites!
     float best=-1e6;
     State cur=state;
@@ -109,7 +109,7 @@ float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &rol
     return best;
 }
 
-float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
+float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player){
 
    //always an option: take miss
    State cur=state;
@@ -129,7 +129,7 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
     return std::max(best, evaluate_without_whites(state, roll));
 }
 
-float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll){
+float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll, size_t current_player){
    
    float best=-1e-6;
    
@@ -146,7 +146,7 @@ float Evaluator::evaluate_roll(const State &state, const ShortDiceRoll &roll){
 }
 
 
-void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix){
+void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll, MoveInfos &res, const std::string &prefix, size_t current_player){
     for(size_t dice=4;dice<=5;dice++)
         for(size_t j=0;j<COLOR_CNT;j++){
             Color color=static_cast<Color>(j);
@@ -156,7 +156,7 @@ void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll
         }
 }
 
-Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll){
+Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll, size_t current_player){
    MoveInfos res;
    
    //always an option: take miss
@@ -186,7 +186,7 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
 
 
 
-Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const ShortDiceRoll &roll){
+Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player){
    MoveInfos res;
    
    //I'm allowed not to take anything:
