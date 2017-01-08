@@ -75,15 +75,28 @@ float Evaluator::evaluate_state(const State &state, size_t current_player){
         }
         else{
            double value=0;
-           std::unique_ptr<RollGenerator> gen;
-           if(sampling_number==0)
-              gen.reset(new  BruteForceRollGenerator());
-           else
-              gen.reset(new GlobalRollGenerator(sampling_number));
-           while(gen->has_next()){
-                RollPair roll_pair=gen->get_next();
-                value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll, current_player);
-           }        
+           if(current_player==0){//it is my turn
+               std::unique_ptr<RollGenerator> gen;
+               if(sampling_number==0)
+                  gen.reset(new  BruteForceRollGenerator());
+               else
+                  gen.reset(new GlobalRollGenerator(sampling_number));
+               while(gen->has_next()){
+                    RollPair roll_pair=gen->get_next();
+                    value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll, current_player);
+               }
+           } 
+           else{//it is not my turn, only short roll can be used
+               std::unique_ptr<ShortRollGenerator> gen;
+               if(sampling_number==0)
+                  gen.reset(new  BruteForceShortRollGenerator());
+               else
+                  gen.reset(new GlobalShortRollGenerator(sampling_number));
+               while(gen->has_next()){
+                    ShortRollPair roll_pair=gen->get_next();
+                    value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll, current_player);
+               }           
+           }       
            mem.at(id)=static_cast<float>(value);
         }
      }
