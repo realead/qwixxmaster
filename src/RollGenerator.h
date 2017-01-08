@@ -27,3 +27,24 @@ public:
 };
 
 
+/*!\brief interface for iterating through short rolls */
+
+
+struct ShortRollPair{
+    double probability;
+    ShortDiceRoll roll;
+    ShortRollPair(double prob, const ShortDiceRoll &roll_):
+        probability(prob), roll(roll_){}
+};
+
+class ShortRollGenerator{
+
+public:
+    virtual bool has_next() const=0;
+    virtual ShortRollPair get_next()=0;
+    virtual ~ShortRollGenerator(){};
+};
+
+
+
+
