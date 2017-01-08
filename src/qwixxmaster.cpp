@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     Control control=parse_command_line(argc, argv);
     game g(control.sampling_number, control.mem_file);
     
-    std::cout<<"Welcome to quixxmaster!"<<std::endl;
+    std::cout<<"Welcome to qwixxmaster!"<<std::endl;
     
     while(true){
        std::cout<<">>>";
