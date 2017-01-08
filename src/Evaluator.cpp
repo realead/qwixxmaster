@@ -243,3 +243,7 @@ std::pair<size_t, size_t> Evaluator::load_memory_from_file(const std::string &fi
   return std::make_pair(mem.size(), not_set);
 }
 
+ size_t Evaluator::get_number_of_players() const{
+    return player_number;
+ }
+

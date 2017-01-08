@@ -1,0 +1,5 @@
+Welcome to qwixxmaster!
+>>>unknown syntax: 'evaluate 10 10'. Known syntax for the 'evaluate' command is 'evaluate [current_player_id=0]'.
+>>>there are only 1 players, and no player with id 2
+>>>cannot parse current player: S
+>>>exiting...

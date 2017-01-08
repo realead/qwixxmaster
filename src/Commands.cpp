@@ -344,9 +344,16 @@ std::string RestartCommandExecuter::execute(State &state, Evaluator &evaluator){
 
 
 //Evaluate
+EvaluateCommandExecuter::EvaluateCommandExecuter(size_t current_player_):
+    current_player(current_player_)
+{}
+
+
 std::string EvaluateCommandExecuter::execute(State &state, Evaluator &evaluator){
+    if(evaluator.get_number_of_players()<=current_player)
+          THROW_QWIXX("there are only "<< evaluator.get_number_of_players() <<" players, and no player with id "<<current_player);  
     std::stringstream ss;
-    ss<<"Expected score: "<<evaluator.evaluate_state(state, 0);
+    ss<<"Expected score: "<<evaluator.evaluate_state(state, current_player);
     return ss.str();
 }
 
@@ -357,19 +364,23 @@ std::string EvaluateCommandParser::command_name() const{
 
 
 std::string EvaluateCommandParser::usage() const{
-   return "'evaluate'";
+   return "'evaluate [current_player_id=0]'";
 }
 
 std::string EvaluateCommandParser::description() const{
     return "evaluate the states and prints expected score for a perfect strategy";
 }
 std::vector<size_t> EvaluateCommandParser::possible_argument_cnt() const{ 
-    return {0};
+    return {0,1};
 }
 
-
 CommandExecuterPtr EvaluateCommandParser::parse_inner(const CommandLine &line){
-    return CommandExecuterPtr(new EvaluateCommandExecuter());
+    int current_player_id =  0;
+    if(line.size()==2){
+        if(!stringutils::str2int(line.at(1), current_player_id))
+           THROW_QWIXX("cannot parse current player: "<< line.at(1));
+    }
+    return CommandExecuterPtr(new EvaluateCommandExecuter(current_player_id));
 }
 
 

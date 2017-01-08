@@ -82,9 +82,16 @@ CREATE_COMMAND_DECLARATION(Restart);
 
 //Evaluation:
 
-CREATE_COMMAND_DECLARATION(Evaluate);
+CREATE_COMMAND_PARSER_DECLARATION(Evaluate);
 
+class EvaluateCommandExecuter: public CommandExecuter{
+     size_t current_player;
+public: 
+     EvaluateCommandExecuter(size_t current_player);
+     virtual std::string execute(State &state, Evaluator &evaluator);
+};
 
+//ROLL:
 CREATE_COMMAND_PARSER_DECLARATION(Roll);
 
 template <size_t  len>
