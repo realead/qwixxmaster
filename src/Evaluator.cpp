@@ -57,9 +57,9 @@ namespace {
   
 }
 
-Evaluator::Evaluator(size_t sampling_number_): 
-   sampling_number(sampling_number_),
-   mem(calc_max_index()+1, STATE_NOT_EVALUATED)
+Evaluator::Evaluator(size_t sampling_number_, size_t player_number_): 
+   sampling_number(sampling_number_), player_number(player_number_),
+   mem(player_number*(calc_max_index()+1), STATE_NOT_EVALUATED)
 {}
 
 

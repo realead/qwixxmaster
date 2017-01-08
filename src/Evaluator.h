@@ -11,11 +11,12 @@ class State;
 class Evaluator{
 private:
     size_t sampling_number;
+    size_t player_number;
     std::vector<float> mem;
     
     float evaluate_without_whites(const State &state, const DiceRoll &roll);    
 public:
-    Evaluator(size_t sampling_number);
+    Evaluator(size_t sampling_number, size_t player_number=1);
     float evaluate_state(const State &state);
     float evaluate_roll(const State &state, const DiceRoll &roll);
     
