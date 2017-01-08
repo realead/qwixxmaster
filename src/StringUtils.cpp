@@ -36,7 +36,7 @@ int stringutils::str2int(const std::string &str){
     bool flag=str2int(str, result);
     
     if(!flag)
-        THROW_QUIXX("Not an integer "<<str);
+        THROW_QWIXX("Not an integer "<<str);
     return result;
 }
 

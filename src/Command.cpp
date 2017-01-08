@@ -18,13 +18,13 @@ namespace{
 
 bool CommandDictionary::register_command(CommandParser *command){
     if(command==NULL)
-        THROW_QUIXX("Trying to register NULL as command - this is not allowed");
+        THROW_QWIXX("Trying to register NULL as command - this is not allowed");
         
     CommandParserPtr c(command);
     const std::string command_name=c->command_name(); 
     CommandMap &map=get_command_map();
     if(map.count(command_name)>0)   
-        THROW_QUIXX("Trying to register command "<<command_name<<" twice");
+        THROW_QWIXX("Trying to register command "<<command_name<<" twice");
     map[command_name]=std::move(c);
     return true; 
 }
@@ -47,14 +47,14 @@ std::vector<std::string> CommandDictionary::get_registered_command_names(){
 CommandParser &CommandDictionary::get_command_parser(const std::string &command_name){
    CommandMap::const_iterator it=get_command_map().find(command_name);
     if(it==get_command_map().end())
-        THROW_QUIXX("unknown command: "<< command_name);
+        THROW_QWIXX("unknown command: "<< command_name);
     return *(it->second);
 }
 
 CommandExecuterPtr CommandParser::parse(const CommandLine &line){
     //paranoia:
     if(line.empty() || line.front()!=command_name())
-       THROW_QUIXX("this is not the command: "<< command_name());
+       THROW_QWIXX("this is not the command: "<< command_name());
     
     std::vector<size_t> arg_cnts=possible_argument_cnt();
     if(std::count(arg_cnts.begin(), arg_cnts.end(), line.size()-1)==0){
@@ -65,6 +65,6 @@ CommandExecuterPtr CommandParser::parse(const CommandLine &line){
 }
 
  void CommandParser::wrong_syntax(const CommandLine &line) const{
-    THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax for the '"<< command_name() << "' command is "<< usage()<<".");
+    THROW_QWIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax for the '"<< command_name() << "' command is "<< usage()<<".");
  }
 

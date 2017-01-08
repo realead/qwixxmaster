@@ -8,7 +8,7 @@ class QwixxException: public std::runtime_error{
         QwixxException(const std::string &message) : std::runtime_error(message){}
 };
 
-#define THROW_QUIXX(message)\
+#define THROW_QWIXX(message)\
 {\
     std::stringstream ss;\
     ss<<message;\

@@ -17,13 +17,13 @@ void MemoryManager::load_memory(const std::string &filename, std::vector<float> 
     size_t magic_number;
     file.read((char *)&magic_number, sizeof(magic_number));
     if(magic_number!=MAGIC_NUMBER){
-        THROW_QUIXX("wrong magic number ("<<magic_number<<") in file '"<<filename<<"'");
+        THROW_QWIXX("wrong magic number ("<<magic_number<<") in file '"<<filename<<"'");
     }
     
     size_t version;
     file.read((char *)&version, sizeof(version));
     if(version!=VERSION){
-        THROW_QUIXX("my version is "<<VERSION<<", cannot read version "<<version<<" of file '"<<filename<<"'");
+        THROW_QWIXX("my version is "<<VERSION<<", cannot read version "<<version<<" of file '"<<filename<<"'");
     }
     
     
@@ -38,7 +38,7 @@ void MemoryManager::load_memory(const std::string &filename, std::vector<float> 
     }
     
     if(!file.good())
-        THROW_QUIXX("could not read file '"<<filename<<"'");
+        THROW_QWIXX("could not read file '"<<filename<<"'");
 }
 
 
@@ -61,7 +61,7 @@ void MemoryManager::save_memory(const std::string &filename, const std::vector<f
     }
     
     if(!file.good())
-        THROW_QUIXX("could not write file '"<<filename<<"'");
+        THROW_QWIXX("could not write file '"<<filename<<"'");
 }
 
 

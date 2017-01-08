@@ -157,11 +157,11 @@ CommandExecuterPtr TakeCommandParser::parse_inner(const CommandLine &line){
     //normal take
     Color color;
     if(!str2color(line.at(1), color)){
-        THROW_QUIXX("unknown color '"<<line.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'");
+        THROW_QWIXX("unknown color '"<<line.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'");
     }
     int number;
     if(!stringutils::str2int(line.at(2), number)){
-       THROW_QUIXX("could not convert '"<<line.at(2)<<"' to number");
+       THROW_QWIXX("could not convert '"<<line.at(2)<<"' to number");
     }
     
     return CommandExecuterPtr(new TakeColorCommandExecuter(color, number));
@@ -173,7 +173,7 @@ TakeColorCommandExecuter::TakeColorCommandExecuter(Color color_, int number_):
    
 std::string TakeColorCommandExecuter::execute(State &state, Evaluator &evaluator){
     if(!state.take(color, number)){
-            THROW_QUIXX("invalid move");
+            THROW_QWIXX("invalid move");
     }
     return "";
 }
@@ -207,12 +207,12 @@ CommandExecuterPtr SetCommandParser::parse_inner(const CommandLine &line){
     for(size_t i=0;i<COLOR_CNT;i++){
             if(!stringutils::str2int(line.at(i*2+1), taken[i]) ||
                !stringutils::str2int(line.at(i*2+2), last[i])){
-               THROW_QUIXX("cannot parse for color "<<color2str(static_cast<Color>(i)));   
+               THROW_QWIXX("cannot parse for color "<<color2str(static_cast<Color>(i)));   
             }
     }
     int missed;
     if(!stringutils::str2int(line.back(), missed)){
-            THROW_QUIXX("cannot parse missed");
+            THROW_QWIXX("cannot parse missed");
     }  
     return CommandExecuterPtr(new SetCommandExecuter(last, taken, missed)); 
 }
@@ -227,12 +227,12 @@ std::string SetCommandExecuter::execute(State &state, Evaluator &evaluator){
     for(size_t i=0;i<COLOR_CNT;i++){
         Color color=static_cast<Color>(i); 
         if(!new_state.set(color, last[i], taken[i])){
-               THROW_QUIXX("invalid set for color "<<color2str(color));
+               THROW_QWIXX("invalid set for color "<<color2str(color));
         }
     }
     
     if(!new_state.set_missed(missed)){
-        THROW_QUIXX("invalid missed");
+        THROW_QWIXX("invalid missed");
     }
     state=new_state;
     
@@ -262,11 +262,11 @@ std::vector<size_t> PossibleCommandParser::possible_argument_cnt() const{
 CommandExecuterPtr PossibleCommandParser::parse_inner(const CommandLine &line){   
     Color color;
     if(!str2color(line.at(1), color)){
-        THROW_QUIXX("unknown color '"<<line.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'");
+        THROW_QWIXX("unknown color '"<<line.at(1)<<"'. Known colors are 'red', 'yellow', 'green', and 'blue'");
     }
     int number;
     if(!stringutils::str2int(line.at(2), number)){
-       THROW_QUIXX("could not convert '"<<line.at(2)<<"' to number");
+       THROW_QWIXX("could not convert '"<<line.at(2)<<"' to number");
     }
     
     return CommandExecuterPtr(new PossibleCommandExecuter(color, number));
@@ -425,9 +425,9 @@ namespace{
         for(size_t i=0;i<len;i++){         
             int dice;
             if(!stringutils::str2int(line.at(i+1), dice))
-               THROW_QUIXX("could not convert '"<<line.at(i+1)<<"' to a number");
+               THROW_QWIXX("could not convert '"<<line.at(i+1)<<"' to a number");
             if(dice<1 || dice>6)
-               THROW_QUIXX("dice value must be between 1 and 6 inclusive but is '"<<dice<<"'");
+               THROW_QWIXX("dice value must be between 1 and 6 inclusive but is '"<<dice<<"'");
             res[i]=dice;
         }
         return res;
@@ -464,7 +464,7 @@ namespace{
             std::vector<std::string> spLine=stringutils::split(s, ' ');
             Color color; int number;
             if(!str2color(spLine.at(0), color) || !stringutils::str2int(spLine.at(1), number)){
-                    THROW_QUIXX("we have an internal problem... call ghostbusters!");
+                    THROW_QWIXX("we have an internal problem... call ghostbusters!");
             }
             res.push_back(CommandExecuterPtr(new TakeColorCommandExecuter(color, number)));
         } 
@@ -507,10 +507,10 @@ std::vector<size_t> AutoplayCommandParser::possible_argument_cnt() const{
 
 CommandExecuterPtr AutoplayCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2)
-       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'autoplay <seed>'");
+       THROW_QWIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'autoplay <seed>'");
     int seed;   
     if (!stringutils::str2int(line.at(1), seed))
-       THROW_QUIXX("could not convert '"<<line.at(1)<<"' to a number");
+       THROW_QWIXX("could not convert '"<<line.at(1)<<"' to a number");
        
     return CommandExecuterPtr(new AutoplayCommandExecuter(seed));
 }
@@ -552,7 +552,7 @@ std::vector<size_t> SaveCommandParser::possible_argument_cnt() const{
 
 CommandExecuterPtr SaveCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2)
-       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'save <filename>'");
+       THROW_QWIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'save <filename>'");
 
     return CommandExecuterPtr(new SaveCommandExecuter(line.at(1)));
 }
@@ -587,7 +587,7 @@ std::vector<size_t> LoadCommandParser::possible_argument_cnt() const{
 
 CommandExecuterPtr LoadCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2)
-       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'load <filename>'");
+       THROW_QWIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'load <filename>'");
 
     return CommandExecuterPtr(new LoadCommandExecuter(line.at(1)));
 }
@@ -622,7 +622,7 @@ std::vector<size_t> HelpCommandParser::possible_argument_cnt() const{
 
 CommandExecuterPtr HelpCommandParser::parse_inner(const CommandLine &line){
     if(line.size()!=2 && line.size()!=1)
-       THROW_QUIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is either 'help' or 'help <command>'");
+       THROW_QWIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is either 'help' or 'help <command>'");
     if(line.size()==1)
        return CommandExecuterPtr(new HelpCommandExecuter());
     return CommandExecuterPtr(new CommandDescriptionCommandExecuter(line.at(1)));
