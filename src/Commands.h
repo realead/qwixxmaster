@@ -109,8 +109,9 @@ CREATE_COMMAND_PARSER_DECLARATION(Autoplay);
 
 class AutoplayCommandExecuter: public CommandExecuter{
      size_t seed;
+     size_t start_player;
 public: 
-     AutoplayCommandExecuter(size_t seed);
+     AutoplayCommandExecuter(size_t seed, size_t start_player);
      virtual std::string execute(State &state, Evaluator &evaluator);
 };
 

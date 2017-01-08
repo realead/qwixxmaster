@@ -14,7 +14,6 @@ private:
     size_t player_number;
     std::vector<float> mem;
        
-    size_t get_next_player(size_t current_player) const;
 public:
     Evaluator(size_t sampling_number, size_t player_number);
     float evaluate_state(const State &state, size_t current_player);
@@ -33,6 +32,7 @@ public:
     std::pair<size_t, size_t> load_memory_from_file(const std::string &filename);
     
     size_t get_number_of_players() const;
+    size_t get_next_player(size_t current_player) const;
     
 private:  
     float evaluate_without_whites(const State &state, const DiceRoll &roll, size_t current_player); 

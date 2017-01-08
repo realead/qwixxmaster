@@ -483,16 +483,22 @@ namespace{
     }
 }
 std::string AutoplayCommandExecuter::execute(State &state, Evaluator &evaluator){
+
+    if(evaluator.get_number_of_players()<=start_player)
+          THROW_QWIXX("there are only "<< evaluator.get_number_of_players() <<" players, and no player with id "<<start_player); 
+          
     std::stringstream ss;
     DiceRoller roller(seed);
     size_t move_number=0;
+    size_t current_player=start_player;
     while(!state.ended()){
-      ss<<"move "<<move_number<<" expected score: "<<evaluator.evaluate_state(state, 0)<<std::endl;
-      std::vector<CommandExecuterPtr> commands=translate_to_executers(evaluator.get_roll_evaluation(state, roller.roll(), 0));
+      ss<<"move "<<move_number<<" expected score: "<<evaluator.evaluate_state(state, current_player)<<std::endl;
+      std::vector<CommandExecuterPtr> commands=translate_to_executers(evaluator.get_roll_evaluation(state, roller.roll(), current_player));
       for(const CommandExecuterPtr &command : commands){
         command->execute(state, evaluator);
       }
       move_number++;
+      current_player=evaluator.get_next_player(current_player);
     }
     
     ss<<"Score: "<<state.score();
@@ -504,7 +510,7 @@ std::string AutoplayCommandParser::command_name() const{
 }
 
 std::string AutoplayCommandParser::usage() const{
-   return "'autoplay <seed>'";
+   return "'autoplay <seed> [starting_player=0]'";
 }
 
 std::string AutoplayCommandParser::description() const{
@@ -512,22 +518,25 @@ std::string AutoplayCommandParser::description() const{
 }
 
 std::vector<size_t> AutoplayCommandParser::possible_argument_cnt() const{ 
-    return {1};
+    return {1,2};
 }
 
 
 CommandExecuterPtr AutoplayCommandParser::parse_inner(const CommandLine &line){
-    if(line.size()!=2)
-       THROW_QWIXX("unknown syntax: '"<<stringutils::join(line)<<"'. Known syntax is 'autoplay <seed>'");
     int seed;   
     if (!stringutils::str2int(line.at(1), seed))
        THROW_QWIXX("could not convert '"<<line.at(1)<<"' to a number");
+    int start_player=0;
+    if (line.size()==3){
+       if(!stringutils::str2int(line.at(2), start_player))
+            THROW_QWIXX("could not convert '"<<line.at(2)<<"' to a number");
+    }
        
-    return CommandExecuterPtr(new AutoplayCommandExecuter(seed));
+    return CommandExecuterPtr(new AutoplayCommandExecuter(seed, start_player));
 }
 
-AutoplayCommandExecuter::AutoplayCommandExecuter(size_t seed_):
-    seed(seed_)
+AutoplayCommandExecuter::AutoplayCommandExecuter(size_t seed_, size_t start_player_):
+    seed(seed_), start_player(start_player_)
 {}
 
 
