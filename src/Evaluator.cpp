@@ -88,7 +88,7 @@ float Evaluator::evaluate_state(const State &state, size_t current_player){
            } 
            else{//it is not my turn, only short roll can be used
                std::unique_ptr<ShortRollGenerator> gen;
-               if(sampling_number==0 || sampling_number<=21) //there are at most 21 different dice rolls!
+               if(sampling_number==0 || sampling_number>=21) //there are at most 21 different dice rolls!
                   gen.reset(new  BruteForceShortRollGenerator());
                else
                   gen.reset(new GlobalShortRollGenerator(sampling_number));
