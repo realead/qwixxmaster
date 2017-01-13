@@ -12,8 +12,9 @@ namespace{
 DiceRoll RandomDice::random_roll(){
    std::mt19937 &gen=get_global_random();
    DiceRoll res;
+   std::uniform_int_distribution<int> uni(1,6);
    for(size_t i=0;i<6;i++)
-     res.at(i)=1+gen()%6;
+     res.at(i)=uni(gen);
    return res;
 }
 
@@ -21,8 +22,9 @@ DiceRoll RandomDice::random_roll(){
 ShortDiceRoll RandomDice::random_short_roll(){
    std::mt19937 &gen=get_global_random();
    ShortDiceRoll res;
+   std::uniform_int_distribution<int> uni(1,6);
    for(size_t i=0;i<res.size();i++)
-     res.at(i)=1+gen()%6;
+     res.at(i)=uni(gen);
    return res;
 }
 
