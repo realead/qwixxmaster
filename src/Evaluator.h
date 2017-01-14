@@ -18,13 +18,13 @@ public:
     Evaluator(size_t sampling_number, size_t player_number);
     float evaluate_state(const State &state, size_t current_player);
     
-    float evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player);
+    float evaluate_roll(const State &state, const DiceRoll &roll);
     float evaluate_roll(const State &state, const ShortDiceRoll &roll, size_t current_player);
     
     typedef std::pair<float, std::string> MoveInfo;
     typedef std::vector<MoveInfo> MoveInfos;
-    MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll, size_t current_player);
-    MoveInfos get_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player);
+    MoveInfos get_roll_evaluation(const State &state, const DiceRoll &roll);
+    MoveInfos get_short_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player);
     
     
     //returns: size of the memory, number of unset states

@@ -391,6 +391,19 @@ RollCommandExecuter<len>::RollCommandExecuter(const std::array<int, len> &roll_,
 {}
 
 
+namespace{
+  template <size_t  len>
+  Evaluator::MoveInfos infos_picker(State &state, Evaluator &evaluator, std::array<int, len> &roll, size_t cur_player){
+     return evaluator.get_short_roll_evaluation(state, roll, cur_player);
+  }
+  
+  
+  template<>
+  Evaluator::MoveInfos infos_picker(State &state, Evaluator &evaluator, std::array<int, 6> &roll, size_t cur_player){
+     return evaluator.get_roll_evaluation(state, roll);
+  }
+}
+
 template <size_t  len>
 std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator){
 
@@ -398,7 +411,7 @@ std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator
           THROW_QWIXX("there are only "<< evaluator.get_number_of_players() <<" players, and no player with id "<<current_player); 
           
     std::stringstream ss;
-    Evaluator::MoveInfos infos=evaluator.get_roll_evaluation(state, roll, current_player);
+    Evaluator::MoveInfos infos=infos_picker(state, evaluator, roll, current_player);
     size_t cnt=0;
     for(const Evaluator::MoveInfo &info:infos){
            if(cnt!=0)
@@ -408,9 +421,6 @@ std::string RollCommandExecuter<len>::execute(State &state, Evaluator &evaluator
     }
     return ss.str();
 }
-
-
-template class RollCommandExecuter<6>;
 
 
 std::string RollCommandParser::command_name() const{ 
@@ -501,7 +511,12 @@ std::string AutoplayCommandExecuter::execute(State &state, Evaluator &evaluator)
     size_t current_player=start_player;
     while(!state.ended()){
       ss<<"move "<<move_number<<" expected score: "<<evaluator.evaluate_state(state, current_player)<<std::endl;
-      std::vector<CommandExecuterPtr> commands=translate_to_executers(evaluator.get_roll_evaluation(state, roller.roll(), current_player));
+      auto evals = current_player == 0 ? 
+                   evaluator.get_roll_evaluation(state, roller.roll()) :
+                   evaluator.get_short_roll_evaluation(state, roller.short_roll(), current_player);
+     
+      auto commands=translate_to_executers(evals);
+      
       for(const CommandExecuterPtr &command : commands){
         command->execute(state, evaluator);
       }

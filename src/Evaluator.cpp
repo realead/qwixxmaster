@@ -83,7 +83,7 @@ float Evaluator::evaluate_state(const State &state, size_t current_player){
                   gen.reset(new GlobalRollGenerator(sampling_number));
                while(gen->has_next()){
                     RollPair roll_pair=gen->get_next();
-                    value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll, current_player);
+                    value+=roll_pair.probability*evaluate_roll(state, roll_pair.roll);
                }
            } 
            else{//it is not my turn, only short roll can be used
@@ -127,8 +127,10 @@ float Evaluator::evaluate_without_whites(const State &state, const DiceRoll &rol
     return best;
 }
 
-float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll, size_t current_player){
-   size_t next_player=get_next_player(current_player);
+float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
+   //for full roll the current player is always 0!
+   size_t current_player=0;
+   size_t next_player=get_next_player(0);
 
    //always an option: take miss
    State cur=state;
@@ -178,9 +180,12 @@ void Evaluator::evaluate_without_whites(const State &state, const DiceRoll &roll
         }
 }
 
-Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll, size_t current_player){
-   MoveInfos res;
+Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const DiceRoll &roll){
+   MoveInfos res; 
+   //for full roll the current player is always 0!
+   size_t current_player=0;
    size_t next_player=get_next_player(current_player);
+   
    //always an option: take miss
    State cur=state;
    cur.add_miss();
@@ -208,7 +213,7 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
 
 
 
-Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player){
+Evaluator::MoveInfos Evaluator::get_short_roll_evaluation(const State &state, const ShortDiceRoll &roll, size_t current_player){
    MoveInfos res;
    size_t next_player=get_next_player(current_player);
    
