@@ -31,27 +31,49 @@ import glob
 import sys
 
 test_case_dir=sys.argv[1]
+mode = "run"
+if len(sys.argv)>2:
+    mode = sys.argv[2]
 
-input_files=glob.glob(test_case_dir+"/*.in")
+input_files=glob.glob(test_case_dir+"*.in")
 
 
-wrong=0
-for in_data in input_files:
-    result=execute_process(["bin/qwixxmaster"], in_data )
-    with open(in_data[0:-2]+'ans', 'r') as myfile:
-        expected=myfile.read();
-    if expected!=result.stdout:
-        print "**************************************"
-        print "**************************************"
-        print "Failed in test case :",in_data
-        print "Expected:", expected
-        print "Received:", result.stdout 
-        print "**************************************"
-        print "**************************************\n\n"
-        wrong+=1
+def run(input_files):
+    wrong=0
+    for in_data in input_files:
+        result=execute_process(["bin/qwixxmaster"], in_data )
+        with open(in_data[0:-2]+'ans', 'r') as myfile:
+            expected=myfile.read();
+        if expected!=result.stdout:
+            print "**************************************"
+            print "**************************************"
+            print "Failed in test case :",in_data
+            print "Expected:", expected
+            print "Received:", result.stdout 
+            print "**************************************"
+            print "**************************************\n\n"
+            wrong+=1
         
-if not wrong:
-    print "All", len(input_files), "ok"
+    if not wrong:
+        print "All", len(input_files), "ok"
+    else:
+        print wrong,"out of",len(input_files),"wrong!"
+        exit(1)
+        
+        
+def create(input_files):
+    for in_data in input_files:
+        print "creating reference for", in_data
+        result=execute_process(["bin/qwixxmaster"], in_data )
+        with open(in_data[0:-2]+'ans', 'w') as myfile:
+            myfile.write(result.stdout);
+   
+if mode == "run":
+    run(input_files)
+elif mode == "create":
+    create(input_files)
 else:
-    print wrong,"out of",len(input_files),"wrong!"
+    print "unknown command: ", mode
     exit(1)
+   
+
