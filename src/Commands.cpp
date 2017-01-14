@@ -488,6 +488,9 @@ namespace{
             res.push_back(CommandExecuterPtr(new TakeMissCommandExecuter()));
             return res;
         }
+        if(info.second=="nothing"){
+            return res;//nothing to do, can be the case if it is not my turn
+        }
         std::vector<std::string> splitted=stringutils::split(info.second, ',');
         for(const std::string &s : splitted){
             std::vector<std::string> spLine=stringutils::split(s, ' ');
