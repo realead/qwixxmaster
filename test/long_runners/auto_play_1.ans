@@ -1,29 +1,24 @@
 Welcome to qwixxmaster!
->>>move 0 expected score: 160.84
-move 1 expected score: 161.131
-move 2 expected score: 172.058
-move 3 expected score: 165.818
-move 4 expected score: 165.818
-move 5 expected score: 151.905
-move 6 expected score: 145.046
-move 7 expected score: 147.253
-move 8 expected score: 155.189
-move 9 expected score: 149.909
-move 10 expected score: 148.326
-move 11 expected score: 138.361
-move 12 expected score: 144.009
-move 13 expected score: 135.454
-move 14 expected score: 129.099
-move 15 expected score: 134.838
-move 16 expected score: 136.07
-move 17 expected score: 109.528
-move 18 expected score: 107.545
-move 19 expected score: 100.543
-move 20 expected score: 103.984
-move 21 expected score: 101.387
-move 22 expected score: 103.023
-move 23 expected score: 102.016
-move 24 expected score: 94.125
-move 25 expected score: 93.375
-Score: 65
+>>>move 0 expected score: 161.918
+move 1 expected score: 164.286
+move 2 expected score: 167.572
+move 3 expected score: 158.165
+move 4 expected score: 142.498
+move 5 expected score: 138.653
+move 6 expected score: 129.734
+move 7 expected score: 126.49
+move 8 expected score: 116.803
+move 9 expected score: 116.803
+move 10 expected score: 115.771
+move 11 expected score: 112.031
+move 12 expected score: 120.372
+move 13 expected score: 120.878
+move 14 expected score: 113.473
+move 15 expected score: 97.5542
+move 16 expected score: 102.911
+move 17 expected score: 50.3125
+move 18 expected score: 66.2109
+move 19 expected score: 48.5
+move 20 expected score: 60.4688
+Score: 39
 >>>exiting...
