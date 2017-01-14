@@ -27,10 +27,10 @@ create : $(objects)
 	
 	
 test: create
-	python test/test_io.py test/cases
+	python test/test_io.py test/cases/
 
 long_test: test
-	python test/test_io.py test/long_runners
+	python test/test_io.py test/long_runners/
 
 run: create
 	bin/qwixxmaster
