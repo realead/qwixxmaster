@@ -22,6 +22,7 @@ private:
 public:
   DiceRoller(size_t seed);
   DiceRoll roll();
+  ShortDiceRoll short_roll();
 };
 
 

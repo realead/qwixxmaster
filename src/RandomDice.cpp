@@ -41,6 +41,13 @@ ShortDiceRoll RandomDice::random_short_roll(){
        return res;
  }
  
+ ShortDiceRoll DiceRoller::short_roll(){
+      ShortDiceRoll res;
+      res.at(0)=distr(gen);
+      res.at(1)=distr(gen);
+      return res;
+ }
+ 
  
 //full generator
 GlobalRollGenerator::GlobalRollGenerator(size_t sampling_number):
