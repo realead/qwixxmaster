@@ -77,4 +77,38 @@ Compared to other approximations:
 Approximations 1000 and 100 can be used for practical purposes without much precision loss, approximation 10 is already of a worse quality.
 
 
+### Two "friendly" players
 
+To start a game with more than one player:
+
+    bin/qwixxmaster -n N
+    
+with `N` - the number of players. In this mode there is always 'N-1' short rolls (only two dices, instead of six) between two normal six dice rolls, which the player can just skip.
+
+The possibility that the other player could end the game is not taken into the condsideration for this game mode, so only the average number of points is considered. For our experiments 1000-approximation is used.
+
+For the first player the expected score is `131.175`, for the second player it is slightly higher (by `0.6` points): 131.786. Both are, as can be expected, higher as the score in the single player mode (by `15` points). However the gap between the first and the second player is not very big, and it is unclear whether the second player has an advantage in the real play, where both players make decisions taking into the account the situation of the other player.
+
+The predictions by the 1000-approximation where checked with a 10^6 game simulations, for which the first player scored  `130.879 +/- 0.028` on average and the second - `131.457 +/- 0.028`. Both values are about `0.3` points off from the predicted results, and thus comparable with the errors made for single player mode. This also means, that the program has no big bugs in two-player mode.
+
+Another question is, how much difference is between strategies for single player and two players. For this we take the two-player evaluations and use them for making decisions in a single player game. The difference between the strategies is not very big: `115.635 +/- 0.029` could be achieved, `0.3` points worse than the "right" 1000-approximation but `0.5` points better(!) than the right 100-approximation.
+
+### Three "friendly" players
+
+For three player mode, our 1000-approximation yields the following results:
+
+| player | prediction| achieved (10^6 runs) | error of prediction |
+|--------|-----------|-----------|-------------------|
+| 1.     | 143.065   |  142.724  |  0.341            |
+| 2.     | 144.213   |  143.898  |  0.315            |
+| 3.     | 143.634   |  143.285  |  0.349            |
+
+Another player brings additional 12 points on average. The second player, as could be expected, is in the best position having 1.1 points advantage over the first player and 0.6 points over the third player.
+
+The strategy difference to the one-player-mode is widening and usage of the wrong one results in average 115.10 points, which means a 0.5 points drop compared to the usage of the two-player strategy.
+
+### Two "competitive" players
+
+For mode in which two players are considering eachother best options and trying to maximize the probability of winning/not lossing, the exact results don't seem to be achievable. Thus a heuristic must be used to reach an acceptable level of play.
+
+Status: TODO.
