@@ -29,6 +29,8 @@ def execute_process(command, input_file, ok_code=[0]):
 #find test cases:
 import glob
 import sys
+import os
+
 
 test_case_dir=sys.argv[1]
 mode = "run"
@@ -37,11 +39,19 @@ if len(sys.argv)>2:
 
 input_files=glob.glob(test_case_dir+"*.in")
 
-
+def get_configuration(input_file_name):
+    conf_file_name=input_file_name[0:-2]+'conf';
+    if os.path.isfile(conf_file_name):
+        with open(conf_file_name, 'r') as myfile:
+            return myfile.readline().strip().split()
+    else:
+        return[]
+        
+        
 def run(input_files):
     wrong=0
     for in_data in input_files:
-        result=execute_process(["bin/qwixxmaster"], in_data )
+        result=execute_process(["bin/qwixxmaster"]+get_configuration(in_data), in_data )
         with open(in_data[0:-2]+'ans', 'r') as myfile:
             expected=myfile.read();
         if expected!=result.stdout:
@@ -64,7 +74,7 @@ def run(input_files):
 def create(input_files):
     for in_data in input_files:
         print "creating reference for", in_data
-        result=execute_process(["bin/qwixxmaster"], in_data )
+        result=execute_process(["bin/qwixxmaster"]+get_configuration(in_data), in_data )
         with open(in_data[0:-2]+'ans', 'w') as myfile:
             myfile.write(result.stdout);
    
