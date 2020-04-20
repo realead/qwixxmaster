@@ -52,7 +52,7 @@ to create a perfect strategy for the solitar game. Wait for one or two days to g
 
 ### One player
 
-The brute force calculation yields `115.911` points as expected result for a perfect strategy. 
+The brute force calculation yields `115.911` (correcture: the right value is probably `115.4831`, see https://github.com/realead/qwixxmaster/issues/1 and https://github.com/bmhowe34/qwixx-gen-single-opt) points as expected result for a perfect strategy. 
 If one doesn't use the brute force evaluation of the underling dice roll distribution but approximates it with 1000 random rolls so the calculated expectation is `116.175`. However in a run of `10^6` simulated games, the 1000-approximation can not score as expected: on average it scores only `115.91 +/- 0.03` - the error of the estimation is statistically significant.
 
 For the exact calculation the average score was `115.96 +/- 0.03` and thus slightly better than predicted (but still inside of 2*sigma deviation), so one could conclude  that the expectation gets confirmed.
