@@ -143,7 +143,9 @@ float Evaluator::evaluate_roll(const State &state, const DiceRoll &roll){
         cur=state;
         if(cur.take(color, roll[4]+roll[5])){
             best=std::max(best, evaluate_state(cur, next_player));
-            best=std::max(best, evaluate_without_whites(cur, roll, current_player));
+            if (!cur.ended()){
+                best=std::max(best, evaluate_without_whites(cur, roll, current_player));
+            }
         }
     }
      
@@ -198,9 +200,11 @@ Evaluator::MoveInfos Evaluator::get_roll_evaluation(const State &state, const Di
         if(cur.take(color, roll.at(4)+roll.at(5))){
             std::string move=color2str(color)+" "+stringutils::int2str(roll.at(4)+roll.at(5));
             res.push_back(std::make_pair(evaluate_state(cur, next_player), move));
-            
-            //additional color dice?
-            evaluate_without_whites(cur, roll, res, move+",", current_player);
+
+            if (!cur.ended()){
+                //additional color dice?
+                evaluate_without_whites(cur, roll, res, move+",", current_player);
+            }
         }
     }
     
